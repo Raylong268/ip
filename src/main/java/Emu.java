@@ -1,4 +1,4 @@
-public class Duke {
+public class Emu {
     public static void main(String[] args) {
         String line = "____________________________________________________________\n";
         System.out.println(
