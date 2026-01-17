@@ -29,7 +29,7 @@ public class Emu {
                 break;
             } else if (command.equals("list")) {
                 int listing = 1;
-                String temp = "Here are the tasks in your list: \n";
+                String temp = "Here are the tasks in your list:\n";
                 while (listing <= count) {
                     Task task = storage[listing - 1];
                     temp += listing +
@@ -46,15 +46,15 @@ public class Emu {
                         task.markDone();
                         System.out.println(
                                 line +
-                                "  Nice! I've marked this task as done: \n" +
+                                "  Nice! I've marked this task as done:\n" +
                                 "    " + task.toString() +
                                 "\n" +
                                 line);
                     } else {
-                        System.out.println(line + "Invalid task \n" + line);
+                        System.out.println(line + "Invalid task\n" + line);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println(line + "Invalid number \n" + line);
+                    System.out.println(line + "Invalid number\n" + line);
                 }
             } else if (command.equals("unmark")) {
                 try {
@@ -64,15 +64,15 @@ public class Emu {
                         task.markUndone();
                         System.out.println(
                                 line +
-                                "  OK, I've marked this task as not done yet: \n" +
+                                "  OK, I've marked this task as not done yet:\n" +
                                 "    " + task.toString() +
                                 "\n" +
                                 line);
                     } else {
-                        System.out.println(line + "Invalid task \n" + line);
+                        System.out.println(line + "Invalid task\n" + line);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println(line + "Invalid number \n" + line);
+                    System.out.println(line + "Invalid number\n" + line);
                 }
             } else if (command.equals("todo")) {
                 ToDos task = new ToDos(other);
@@ -80,9 +80,9 @@ public class Emu {
                 count++;
                 System.out.println(
                         line +
-                        "  Got it. I've added this task: \n" +
+                        "  Got it. I've added this task:\n" +
                         "    " + task.toString() + "\n" +
-                        "  Now you have " + count + " tasks in your list \n" +
+                        "  Now you have " + count + " tasks in your list\n" +
                         line);
             } else if (command.equals("deadline")) {
                 int slash = other.indexOf("/by");
@@ -93,9 +93,9 @@ public class Emu {
                 count++;
                 System.out.println(
                         line +
-                        "  Got it. I've added this task: \n" +
+                        "  Got it. I've added this task:\n" +
                         "    " + task.toString() + "\n" +
-                        "  Now you have " + count + " tasks in your list \n" +
+                        "  Now you have " + count + " tasks in your list\n" +
                         line);
             } else if (command.equals("event")) {
                 int slashfrom = other.indexOf("/from");
@@ -108,9 +108,9 @@ public class Emu {
                 count++;
                 System.out.println(
                         line +
-                        "  Got it. I've added this task: \n" +
+                        "  Got it. I've added this task:\n" +
                         "    " + task.toString() + "\n" +
-                        "  Now you have " + count + " tasks in your list \n" +
+                        "  Now you have " + count + " tasks in your list\n" +
                         line);
             }
         }
