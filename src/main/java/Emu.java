@@ -1,13 +1,12 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Emu {
-    private Task[] storage;
-    int count = 0;
+    private ArrayList<Task> storage;
     String line = "____________________________________________________________\n";
 
     public Emu() {
-        storage = new Task[100];
-        count = 0;
+        storage = new ArrayList<>();
     }
 
     public boolean respond(String fullResponse) throws DukeException {
@@ -21,12 +20,12 @@ public class Emu {
                     line +
                     " Bye. Hope to see you again soon!\n" +
                     line);
-            return false;
+            return true;
         } else if (command.equals("list")) {
             int listing = 1;
             String temp = "Here are the tasks in your list:\n";
-            while (listing <= count) {
-                Task task = storage[listing - 1];
+            while (listing <= storage.size()) {
+                Task task = storage.get(listing - 1);
                 temp += listing +
                         "." + task.toString() +
                         "\n";
@@ -36,8 +35,8 @@ public class Emu {
         } else if (command.equals("mark")) {
             try {
                 int tasknumber = Integer.parseInt(other);
-                if (tasknumber <= count) {
-                    Task task = storage[tasknumber - 1];
+                if (tasknumber <= storage.size()) {
+                    Task task = storage.get(tasknumber - 1);
                     task.markDone();
                     System.out.println(
                         line +
@@ -54,8 +53,8 @@ public class Emu {
         } else if (command.equals("unmark")) {
             try {
                 int tasknumber = Integer.parseInt(other);
-                if (tasknumber <= count) {
-                    Task task = storage[tasknumber - 1];
+                if (tasknumber <= storage.size()) {
+                    Task task = storage.get(tasknumber - 1);
                     task.markUndone();
                     System.out.println(
                             line +
@@ -74,33 +73,31 @@ public class Emu {
                 throw new DukeException("You can't make a todo without a description silly!");
             }
             ToDos task = new ToDos(other);
-            storage[count] = task;
-            count++;
+            storage.add(task);
             System.out.println(
                     line +
                     "  Got it. I've added this task:\n" +
                     "    " + task.toString() + "\n" +
-                    "  Now you have " + count + " tasks in your list\n" +
+                    "  Now you have " + storage.size() + " tasks in your list\n" +
                     line);
         } else if (command.equals("deadline")) {
             if (other.equals("")) {
-                throw new DukeException("You can't make a todo without a description silly!");
+                throw new DukeException("You can't make a deadline without a description silly!");
             }
             int slash = other.indexOf("/by");
             String desc = other.substring(0, slash - 1);
             String by = other.substring(slash + 4);
             Deadline task = new Deadline(desc, by);
-            storage[count] = task;
-            count++;
+            storage.add(task);
             System.out.println(
                     line +
                     "  Got it. I've added this task:\n" +
                     "    " + task.toString() + "\n" +
-                    "  Now you have " + count + " tasks in your list\n" +
+                    "  Now you have " + storage.size() + " tasks in your list\n" +
                     line);
         } else if (command.equals("event")) {
             if (other.equals("")) {
-                throw new DukeException("You can't make a todo without a description silly!");
+                throw new DukeException("You can't make an event without a description silly!");
             }
             int slashfrom = other.indexOf("/from");
             int slashto = other.indexOf("/to");
@@ -108,18 +105,34 @@ public class Emu {
             String from = other.substring(slashfrom + 6, slashto - 1);
             String to = other.substring(slashto + 4);
             Events task = new Events(desc, from, to);
-            storage[count] = task;
-            count++;
+            storage.add(task);
             System.out.println(
                 line +
                 "  Got it. I've added this task:\n" +
                 "    " + task.toString() + "\n" +
-                "  Now you have " + count + " tasks in your list\n" +
+                "  Now you have " + storage.size() + " tasks in your list\n" +
                 line);
+        } else if (command.equals("delete")) {
+            try {
+                int tasknumber = Integer.parseInt(other);
+                if (tasknumber <= storage.size()) {
+                    Task task = storage.remove(tasknumber - 1);
+                    System.out.println(
+                        line +
+                        "  Got it. I've removed this task:\n" +
+                        "    " + task.toString() + "\n" +
+                        "  Now you have " + storage.size() + " tasks in your list\n" +
+                        line);
+                } else {
+                    throw new DukeException("That's not a valid task silly!");
+                }
+            } catch (NumberFormatException e) {
+                throw new DukeException("That's not a number silly!");
+            }
         } else {
-            throw new DukeException("I'm sorry, but I don't get what that means :-(");
+            throw new DukeException("I don't get what that means!!");
         }
-        return true;
+        return false;
     }
 
     public static void main(String[] args) {

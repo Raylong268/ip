@@ -10,6 +10,10 @@ unmark me
 mark 9
 unmark 9
 todo
+delete 1
+delete 9
+delete me
+list
 blah
 list
 bye
