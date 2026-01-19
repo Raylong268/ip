@@ -3,10 +3,16 @@ public class Task {
     protected boolean isDone;
 
     public Task(String description) {
+        /*
+         initialises a task with all required info
+         */
         this.description = description;
         this.isDone = false;
     }
 
+    /*
+     getters for statusIcon and description
+     */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
@@ -15,6 +21,9 @@ public class Task {
         return description;
     }
 
+    /*
+     allows a task to be marked/unmarked
+     */
     public void markDone() {
         isDone = true;
     }
@@ -23,6 +32,9 @@ public class Task {
         isDone = false;
     }
 
+    /*
+     string representation of a task
+     */
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }

@@ -3,6 +3,9 @@ public class Events extends Task {
     protected String to;
 
     public Events(String description, String from, String to) {
+        /*
+         initialises an Event task with all required info
+         */
         super(description);
         this.from = from;
         this.to = to;

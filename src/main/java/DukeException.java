@@ -7,6 +7,10 @@ public class DukeException extends Exception {
 
     @Override
     public String getMessage() {
+         /*
+          overrides extending class Exception
+          for custom message
+          */
         return line + " UWA!!! " + super.getMessage() + "\n" + line;
     }
 }

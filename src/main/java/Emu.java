@@ -6,22 +6,36 @@ public class Emu {
     String line = "____________________________________________________________\n";
 
     public Emu() {
+        /*
+        initialises a new ArrayList storage
+         */
         storage = new ArrayList<>();
     }
 
     public boolean respond(String fullResponse) throws DukeException {
+        /*
+        splits the response into 2 parts, the first word
+        command and the other part
+         */
         int firstSpace = fullResponse.indexOf(' ');
         String command = (firstSpace == -1) ? fullResponse
                 : fullResponse.substring(0, firstSpace);
         String other = (firstSpace == -1) ? ""
                 : fullResponse.substring(firstSpace + 1);
         if (command.equals("bye")) {
+            /*
+            returns true when bye is inputted
+            to stop scanner loop
+             */
             System.out.println(
                     line +
                     " Bye. Hope to see you again soon!\n" +
                     line);
             return true;
         } else if (command.equals("list")) {
+            /*
+            lists all Tasks in the ArrayList
+             */
             int listing = 1;
             String temp = "Here are the tasks in your list:\n";
             while (listing <= storage.size()) {
@@ -33,6 +47,10 @@ public class Emu {
             }
             System.out.println(line + temp + line);
         } else if (command.equals("mark")) {
+            /*
+            marks a task if valid input in other,
+            otherwise DukeException
+             */
             try {
                 int tasknumber = Integer.parseInt(other);
                 if (tasknumber <= storage.size()) {
@@ -51,6 +69,10 @@ public class Emu {
                 throw new DukeException("That's not a valid number silly!");
             }
         } else if (command.equals("unmark")) {
+             /*
+            unmarks a task if valid input in other,
+            otherwise DukeException
+             */
             try {
                 int tasknumber = Integer.parseInt(other);
                 if (tasknumber <= storage.size()) {
@@ -69,8 +91,13 @@ public class Emu {
                 throw new DukeException("That's not a number silly!");
             }
         } else if (command.equals("todo")) {
+             /*
+            makes a ToD0 task, or throws dukeException if
+            given no valid input
+             */
             if (other.equals("")) {
-                throw new DukeException("You can't make a todo without a description silly!");
+                throw new DukeException("You can't make a todo " +
+                        "without a description silly!");
             }
             ToDos task = new ToDos(other);
             storage.add(task);
@@ -81,8 +108,13 @@ public class Emu {
                     "  Now you have " + storage.size() + " tasks in your list\n" +
                     line);
         } else if (command.equals("deadline")) {
+             /*
+            makes a deadline task, or throws dukeException if
+            given no valid input
+             */
             if (other.equals("")) {
-                throw new DukeException("You can't make a deadline without a description silly!");
+                throw new DukeException("You can't make a deadline " +
+                        "without a description silly!");
             }
             int slash = other.indexOf("/by");
             String desc = other.substring(0, slash - 1);
@@ -96,6 +128,10 @@ public class Emu {
                     "  Now you have " + storage.size() + " tasks in your list\n" +
                     line);
         } else if (command.equals("event")) {
+             /*
+            makes an event task, or throws dukeException if
+            given no valid input
+             */
             if (other.equals("")) {
                 throw new DukeException("You can't make an event without a description silly!");
             }
@@ -113,6 +149,10 @@ public class Emu {
                 "  Now you have " + storage.size() + " tasks in your list\n" +
                 line);
         } else if (command.equals("delete")) {
+             /*
+            deletes a task, or throws dukeException if
+            given an invalid task
+             */
             try {
                 int tasknumber = Integer.parseInt(other);
                 if (tasknumber <= storage.size()) {
@@ -130,6 +170,9 @@ public class Emu {
                 throw new DukeException("That's not a number silly!");
             }
         } else {
+             /*
+            throws a dukeException for invalid command
+             */
             throw new DukeException("I don't get what that means!!");
         }
         return false;
@@ -140,6 +183,9 @@ public class Emu {
         Scanner scanner = new Scanner(System.in);
         boolean stop = false;
 
+         /*
+          standard start greeting for Emu
+          */
         System.out.println(
             "____________________________________________________________\n" +
             " Hello, I'm Emu!\n" +
@@ -147,10 +193,17 @@ public class Emu {
             "____________________________________________________________\n");
 
         while (!stop) {
+             /*
+            continues scanning, until "bye" input sets
+            stop to true
+             */
             String input = scanner.nextLine();
             try {
                 stop = emu.respond(input);
             } catch (DukeException e) {
+                /*
+                catches any dukeExceptions from emu.respond
+                 */
                 System.out.println(e.getMessage());
             }
         }
