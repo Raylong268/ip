@@ -7,6 +7,11 @@ public class ToDos extends Task {
     }
 
     @Override
+    public String record() {
+        return "T" + super.record();
+    }
+
+    @Override
     public String toString() {
         return "[T]" + super.toString();
     }

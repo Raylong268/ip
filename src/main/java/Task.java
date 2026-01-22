@@ -32,6 +32,9 @@ public class Task {
         isDone = false;
     }
 
+    public String record() {
+        return " | " + getStatusIcon() + " | " + description;
+    }
     /*
      string representation of a task
      */
