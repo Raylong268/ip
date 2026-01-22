@@ -1,14 +1,37 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+
 public class Events extends Task {
     protected String from;
     protected String to;
+    private LocalDate fromDate = null;
+    private LocalDate toDate = null;
 
     public Events(String description, String from, String to) {
         /*
          initialises an Event task with all required info
          */
         super(description);
-        this.from = from;
-        this.to = to;
+
+        try {
+            //converts the string to LocalDate
+            this.fromDate = LocalDate.parse(from);
+            this.from = fromDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+        } catch (DateTimeParseException e) {
+            //defaults to regular string if format does not fit
+            this.from = from;
+        }
+
+        try {
+            //converts the string to LocalDate
+            this.toDate = LocalDate.parse(to);
+            this.to = toDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+        } catch (DateTimeParseException e) {
+            //defaults to regular string if format does not fit
+            this.to = to;
+        }
     }
 
     public String record() {

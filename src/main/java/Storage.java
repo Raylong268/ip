@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-    File f;
+    private File f;
 
     public Storage() {
         this.f = new File("./data/tasks.txt");

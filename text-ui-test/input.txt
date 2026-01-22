@@ -14,6 +14,15 @@ delete 1
 delete 9
 delete me
 list
+event now /from 2015-10-11 /to now
+event now /from now /to 2015-10-11
+deadline time /by 2019-10-15
+list
+deadline /by
+event /from /to
+event /to /from
+deadline /by now
+deadline now /by
 blah
 list
 bye
