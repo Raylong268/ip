@@ -4,107 +4,47 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Emu {
-    private TaskList tasks;
-    private Storage storage;
-
-    public Emu() {
-        /*
-        initialises a new ArrayList storage
-         */
-        try {
-            this.storage = new Storage();
-            this.tasks = storage.initialiseList();
-        } catch (FileNotFoundException e) {
-            System.out.println("UWA!!! I can't seem to find your past tasks!");
-            tasks = new TaskList(new ArrayList<Task>());
-        }
-    }
-
-    public String respond(String command, String other) throws DukeException, IOException {
+    public String respond(TaskList tasks, Storage storage,
+                          String command, String other) throws DukeException, IOException {
         if (command.equals("bye")) {
             storage.resetList(tasks);
             return " Bye. Hope to see you again soon!\n";
         } else if (command.equals("list")) {
             return tasks.list();
         } else if (command.equals("mark")) {
-            try {
-                int number = Integer.parseInt(other);
-                return tasks.mark(number);
-            } catch (NumberFormatException e) {
-                throw new DukeException("That's not a valid number silly!");
-            }
+            int number = Parser.handleNumber(other);
+            return tasks.mark(number);
         } else if (command.equals("unmark")) {
-            try {
-                int number = Integer.parseInt(other);
-                return tasks.unmark(number);
-            } catch (NumberFormatException e) {
-                throw new DukeException("That's not a number silly!");
-            }
+            int number = Parser.handleNumber(other);
+            return tasks.unmark(number);
         } else if (command.equals("todo")) {
              /*
             makes a ToD0 task, or throws dukeException if
             given no valid input
              */
-            if (other.isEmpty()) {
-                throw new DukeException("You can't make a todo " +
-                        "without a description silly!");
-            }
+            Parser.handleTodo(other);
             return tasks.todo(other);
         } else if (command.equals("deadline")) {
              /*
             makes a deadline task, or throws dukeException if
             given no valid input
              */
-            int slash = other.indexOf("/by");
-
-            if (slash == -1) {
-                throw new DukeException(
-                        "You forgot to put /by in your deadline task!");
-            }
-
-            String desc = other.substring(0, slash).trim();
-            String by = other.substring(slash + 3).trim();
-
-            if (desc.isEmpty() || by.isEmpty()) {
-                throw new DukeException("You can't make a deadline " +
-                        "without a description and a date silly!");
-            }
-            return tasks.deadline(other, other);
+            String[] items = Parser.handleDeadline(other);
+            return tasks.deadline(items[0], items[1]);
         } else if (command.equals("event")) {
              /*
             makes an event task, or throws dukeException if
             given no valid input
              */
-            int slashfrom = other.indexOf("/from");
-            int slashto = other.indexOf("/to");
-
-            if (slashfrom == -1 || slashto == -1 || slashto < slashfrom) {
-                throw new DukeException(
-                        "You put in the wrong format! " +
-                                "Use event (desc) /from (from) /to (to) instead!");
-            }
-
-            String desc = other.substring(0, slashfrom).trim();
-            String from = other.substring(slashfrom + 5, slashto).trim();
-            String to = other.substring(slashto + 3).trim();
-
-            if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-                throw new DukeException("You can't make an event " +
-                        "without a description, from date and to date silly!");
-            }
-
-            return tasks.event(other, other, other);
+            String[] items = Parser.handleEvent(other);
+            return tasks.event(items[0], items[1], items[2]);
         } else if (command.equals("delete")) {
              /*
             deletes a task, or throws dukeException if
             given an invalid task
              */
-            try {
-                int number = Integer.parseInt(other);
-                return tasks.delete(number);
-            } catch (NumberFormatException e) {
-                throw new DukeException("That's not a number silly!");
-            }
+            int number = Parser.handleNumber(other);
+            return tasks.delete(number);
         } else {
              /*
             throws a dukeException for invalid command
@@ -119,6 +59,14 @@ public class Emu {
         boolean stop = false;
 
         UI ui = new UI();
+        Storage storage = new Storage();
+        TaskList tasks;
+        try {
+            tasks = storage.initialiseList();
+        } catch (DukeException e) {
+            ui.respond(e.getMessage());
+            tasks = new TaskList(new ArrayList<Task>());
+        }
 
         while (!stop) {
              /*
@@ -128,7 +76,8 @@ public class Emu {
             try {
                 String input = ui.scan();
                 Parser parts = new Parser(input);
-                String response = emu.respond(parts.getCommand(), parts.getOther());
+                String response = emu.respond(tasks, storage,
+                                              parts.getCommand(), parts.getOther());
                 ui.respond(response);
             } catch (IOException e) {
                 ui.respond(" UWA!!! I couldn't record that task!" + "\n");

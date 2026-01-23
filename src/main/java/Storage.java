@@ -18,30 +18,34 @@ public class Storage {
         }
     }
 
-    public TaskList initialiseList() throws FileNotFoundException {
-        ArrayList<Task> temp = new ArrayList<>();
-        Scanner s = new Scanner(f); // create a Scanner using the File as the source
-        while (s.hasNext()) {
-            String text = s.nextLine();
-            Task task;
-            String[] parts = text.split(" \\| ");
+    public TaskList initialiseList() throws DukeException {
+        try {
+            ArrayList<Task> temp = new ArrayList<>();
+            Scanner s = new Scanner(f); // create a Scanner using the File as the source
+            while (s.hasNext()) {
+                String text = s.nextLine();
+                Task task;
+                String[] parts = text.split(" \\| ");
 
-            if (parts[0].equals("T")) {
-                task = new ToDo(parts[2]);
-            } else if (parts[0].equals("D")) {
-                task = new Deadline(parts[2], parts[3]);
-            } else if (parts[0].equals("E")) {
-                task = new Event(parts[2], parts[3], parts[4]);
-            } else {
-                continue;
-            }
+                if (parts[0].equals("T")) {
+                    task = new ToDo(parts[2]);
+                } else if (parts[0].equals("D")) {
+                    task = new Deadline(parts[2], parts[3]);
+                } else if (parts[0].equals("E")) {
+                    task = new Event(parts[2], parts[3], parts[4]);
+                } else {
+                    continue;
+                }
 
-            if (parts[1].equals("X")) {
-                task.markDone();
+                if (parts[1].equals("X")) {
+                    task.markDone();
+                }
+                temp.add(task);
             }
-            temp.add(task);
+            return new TaskList(temp);
+        } catch (FileNotFoundException e) {
+            throw new DukeException("UWA!!! I can't seem to find your past tasks!");
         }
-        return new TaskList(temp);
     }
 
     public void resetList(TaskList tasks) throws IOException {
