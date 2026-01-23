@@ -131,7 +131,7 @@ public class Emu {
             }
 
             String desc = other.substring(0, slash).trim();
-            String by = other.substring(slash + 4).trim();
+            String by = other.substring(slash + 3).trim();
 
             if (desc.isEmpty() || by.isEmpty()) {
                 throw new DukeException("You can't make a deadline " +
@@ -162,7 +162,6 @@ public class Emu {
                         "You put in the wrong format! " +
                                 "Use event (desc) /from (from) /to (to) instead!");
             }
-
 
             String desc = other.substring(0, slashfrom).trim();
             String from = other.substring(slashfrom + 5, slashto).trim();
