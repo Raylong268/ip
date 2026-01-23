@@ -1,3 +1,5 @@
+package emu;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -10,7 +12,7 @@ public class Event extends Task {
 
     public Event(String description, String from, String to) {
         /*
-         initialises an Event task with all required info
+         initialises an duke.Event task with all required info
          */
         super(description);
 

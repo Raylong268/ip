@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package emu;
+
 import java.util.Scanner;
 
 public class UI {
