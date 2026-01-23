@@ -1,3 +1,5 @@
+package emu;
+
 public class Parser {
     private String command;
     private String other;
