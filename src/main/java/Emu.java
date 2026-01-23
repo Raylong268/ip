@@ -1,18 +1,27 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Emu {
     private ArrayList<Task> storage;
+    private Storage file;
     String line = "____________________________________________________________\n";
 
     public Emu() {
         /*
         initialises a new ArrayList storage
          */
-        storage = new ArrayList<>();
+        try {
+            file = new Storage();
+            storage = file.initialiseList();
+        } catch (FileNotFoundException e) {
+            System.out.println("UWA!!! I can't seem to find your past tasks!");
+            storage = new ArrayList<>();
+        }
     }
 
-    public boolean respond(String fullResponse) throws DukeException {
+    public boolean respond(String fullResponse) throws DukeException, IOException {
         /*
         splits the response into 2 parts, the first word
         command and the other part
@@ -27,6 +36,7 @@ public class Emu {
             returns true when bye is inputted
             to stop scanner loop
              */
+            file.resetList(storage);
             System.out.println(
                     line +
                     " Bye. Hope to see you again soon!\n" +
@@ -95,11 +105,12 @@ public class Emu {
             makes a ToD0 task, or throws dukeException if
             given no valid input
              */
-            if (other.equals("")) {
+            if (other.isEmpty()) {
                 throw new DukeException("You can't make a todo " +
                         "without a description silly!");
             }
             ToDos task = new ToDos(other);
+
             storage.add(task);
             System.out.println(
                     line +
@@ -112,15 +123,25 @@ public class Emu {
             makes a deadline task, or throws dukeException if
             given no valid input
              */
-            if (other.equals("")) {
-                throw new DukeException("You can't make a deadline " +
-                        "without a description silly!");
-            }
             int slash = other.indexOf("/by");
-            String desc = other.substring(0, slash - 1);
-            String by = other.substring(slash + 4);
+
+            if (slash == -1) {
+                throw new DukeException(
+                        "You forgot to put /by in your deadline task!");
+            }
+
+            String desc = other.substring(0, slash).trim();
+            String by = other.substring(slash + 4).trim();
+
+            if (desc.isEmpty() || by.isEmpty()) {
+                throw new DukeException("You can't make a deadline " +
+                        "without a description and a date silly!");
+            }
+
             Deadline task = new Deadline(desc, by);
+
             storage.add(task);
+
             System.out.println(
                     line +
                     "  Got it. I've added this task:\n" +
@@ -132,16 +153,30 @@ public class Emu {
             makes an event task, or throws dukeException if
             given no valid input
              */
-            if (other.equals("")) {
-                throw new DukeException("You can't make an event without a description silly!");
-            }
+
             int slashfrom = other.indexOf("/from");
             int slashto = other.indexOf("/to");
-            String desc = other.substring(0, slashfrom - 1);
-            String from = other.substring(slashfrom + 6, slashto - 1);
-            String to = other.substring(slashto + 4);
+
+            if (slashfrom == -1 || slashto == -1 || slashto < slashfrom) {
+                throw new DukeException(
+                        "You put in the wrong format! " +
+                                "Use event (desc) /from (from) /to (to) instead!");
+            }
+
+
+            String desc = other.substring(0, slashfrom).trim();
+            String from = other.substring(slashfrom + 5, slashto).trim();
+            String to = other.substring(slashto + 3).trim();
+
+            if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
+                throw new DukeException("You can't make an event " +
+                        "without a description, from date and to date silly!");
+            }
+
             Events task = new Events(desc, from, to);
+
             storage.add(task);
+
             System.out.println(
                 line +
                 "  Got it. I've added this task:\n" +
@@ -182,6 +217,7 @@ public class Emu {
         Emu emu = new Emu();
         Scanner scanner = new Scanner(System.in);
         boolean stop = false;
+        String line = "____________________________________________________________\n";
 
          /*
           standard start greeting for Emu
@@ -200,6 +236,8 @@ public class Emu {
             String input = scanner.nextLine();
             try {
                 stop = emu.respond(input);
+            } catch (IOException e) {
+                System.out.println(line + " UWA!!! I couldn't record that task!" + "\n" + line);
             } catch (DukeException e) {
                 /*
                 catches any dukeExceptions from emu.respond
