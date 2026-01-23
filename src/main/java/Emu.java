@@ -79,6 +79,9 @@ public class Emu {
                 String response = emu.respond(tasks, storage,
                                               parts.getCommand(), parts.getOther());
                 ui.respond(response);
+                if (parts.getCommand().equals("bye")) {
+                    break;
+                }
             } catch (IOException e) {
                 ui.respond(" UWA!!! I couldn't record that task!" + "\n");
             } catch (DukeException e) {
