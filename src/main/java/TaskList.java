@@ -7,6 +7,14 @@ public class TaskList {
         this.tasks = tasks;
     }
 
+    public Task get(int number) {
+        return tasks.get(number);
+    }
+
+    public int size() {
+        return tasks.size();
+    }
+
     public String list() {
         int listing = 1;
         String temp = "Here are the tasks in your list:\n";
@@ -58,7 +66,7 @@ public class TaskList {
                "  Now you have " + tasks.size() + " tasks in your list\n";
     }
 
-    public String other(String desc, String from, String to) {
+    public String event(String desc, String from, String to) {
         Event task = new Event(desc, from, to);
         tasks.add(task);
         return "  Got it. I've added this task:\n" +
