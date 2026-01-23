@@ -1,5 +1,5 @@
-public class ToDos extends Task {
-    public ToDos(String description) {
+public class ToDo extends Task {
+    public ToDo(String description) {
         /*
          initialises a tod0 task with all required info
          */

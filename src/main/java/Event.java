@@ -1,15 +1,14 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
-public class Events extends Task {
+public class Event extends Task {
     protected String from;
     protected String to;
     private LocalDate fromDate = null;
     private LocalDate toDate = null;
 
-    public Events(String description, String from, String to) {
+    public Event(String description, String from, String to) {
         /*
          initialises an Event task with all required info
          */

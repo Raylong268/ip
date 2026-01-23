@@ -6,53 +6,43 @@ ____________________________________________________________
 ____________________________________________________________
   Got it. I've added this task:
     [T][ ] borrow book
-  Now you have 6 tasks in your list
+  Now you have 1 tasks in your list
 ____________________________________________________________
 
 ____________________________________________________________
   Got it. I've added this task:
     [D][ ] return book (by: Sunday)
-  Now you have 7 tasks in your list
+  Now you have 2 tasks in your list
 ____________________________________________________________
 
 ____________________________________________________________
   Got it. I've added this task:
     [E][ ] project meeting (from: Mon 2pm to: 4pm)
-  Now you have 8 tasks in your list
+  Now you have 3 tasks in your list
 ____________________________________________________________
 
 ____________________________________________________________
   Nice! I've marked this task as done:
-    [E][X] project meeting (from: Mon 2pm to: 4pm)
+    [D][X] return book (by: Sunday)
 ____________________________________________________________
 
 ____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] return book (by: Sunday)
-2.[E][X] project meeting (from: Mon 2pm to: 4pm)
-3.[E][ ] now (from: Oct 11 2015 to: now)
-4.[E][ ] now (from: now to: Oct 11 2015)
-5.[D][ ] time (by: Oct 15 2019)
-6.[T][ ] borrow book
-7.[D][ ] return book (by: Sunday)
-8.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+1.[T][ ] borrow book
+2.[D][X] return book (by: Sunday)
+3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 
 ____________________________________________________________
   OK, I've marked this task as not done yet:
-    [E][ ] project meeting (from: Mon 2pm to: 4pm)
+    [D][ ] return book (by: Sunday)
 ____________________________________________________________
 
 ____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] return book (by: Sunday)
-2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-3.[E][ ] now (from: Oct 11 2015 to: now)
-4.[E][ ] now (from: now to: Oct 11 2015)
-5.[D][ ] time (by: Oct 15 2019)
-6.[T][ ] borrow book
-7.[D][ ] return book (by: Sunday)
-8.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+1.[T][ ] borrow book
+2.[D][ ] return book (by: Sunday)
+3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 
 ____________________________________________________________
@@ -60,7 +50,7 @@ ____________________________________________________________
 ____________________________________________________________
 
 ____________________________________________________________
- UWA!!! That's not a number silly!
+ UWA!!! That's not a valid number silly!
 ____________________________________________________________
 
 ____________________________________________________________
@@ -77,8 +67,8 @@ ____________________________________________________________
 
 ____________________________________________________________
   Got it. I've removed this task:
-    [D][ ] return book (by: Sunday)
-  Now you have 7 tasks in your list
+    [T][ ] borrow book
+  Now you have 2 tasks in your list
 ____________________________________________________________
 
 ____________________________________________________________
@@ -86,50 +76,40 @@ ____________________________________________________________
 ____________________________________________________________
 
 ____________________________________________________________
- UWA!!! That's not a number silly!
+ UWA!!! That's not a valid number silly!
 ____________________________________________________________
 
 ____________________________________________________________
 Here are the tasks in your list:
-1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-2.[E][ ] now (from: Oct 11 2015 to: now)
-3.[E][ ] now (from: now to: Oct 11 2015)
-4.[D][ ] time (by: Oct 15 2019)
-5.[T][ ] borrow book
-6.[D][ ] return book (by: Sunday)
-7.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+1.[D][ ] return book (by: Sunday)
+2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 
 ____________________________________________________________
   Got it. I've added this task:
     [E][ ] now (from: Oct 11 2015 to: now)
-  Now you have 8 tasks in your list
+  Now you have 3 tasks in your list
 ____________________________________________________________
 
 ____________________________________________________________
   Got it. I've added this task:
     [E][ ] now (from: now to: Oct 11 2015)
-  Now you have 9 tasks in your list
+  Now you have 4 tasks in your list
 ____________________________________________________________
 
 ____________________________________________________________
   Got it. I've added this task:
     [D][ ] time (by: Oct 15 2019)
-  Now you have 10 tasks in your list
+  Now you have 5 tasks in your list
 ____________________________________________________________
 
 ____________________________________________________________
 Here are the tasks in your list:
-1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-2.[E][ ] now (from: Oct 11 2015 to: now)
-3.[E][ ] now (from: now to: Oct 11 2015)
-4.[D][ ] time (by: Oct 15 2019)
-5.[T][ ] borrow book
-6.[D][ ] return book (by: Sunday)
-7.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-8.[E][ ] now (from: Oct 11 2015 to: now)
-9.[E][ ] now (from: now to: Oct 11 2015)
-10.[D][ ] time (by: Oct 15 2019)
+1.[D][ ] return book (by: Sunday)
+2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+3.[E][ ] now (from: Oct 11 2015 to: now)
+4.[E][ ] now (from: now to: Oct 11 2015)
+5.[D][ ] time (by: Oct 15 2019)
 ____________________________________________________________
 
 ____________________________________________________________
@@ -158,16 +138,11 @@ ____________________________________________________________
 
 ____________________________________________________________
 Here are the tasks in your list:
-1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-2.[E][ ] now (from: Oct 11 2015 to: now)
-3.[E][ ] now (from: now to: Oct 11 2015)
-4.[D][ ] time (by: Oct 15 2019)
-5.[T][ ] borrow book
-6.[D][ ] return book (by: Sunday)
-7.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-8.[E][ ] now (from: Oct 11 2015 to: now)
-9.[E][ ] now (from: now to: Oct 11 2015)
-10.[D][ ] time (by: Oct 15 2019)
+1.[D][ ] return book (by: Sunday)
+2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+3.[E][ ] now (from: Oct 11 2015 to: now)
+4.[E][ ] now (from: now to: Oct 11 2015)
+5.[D][ ] time (by: Oct 15 2019)
 ____________________________________________________________
 
 ____________________________________________________________
