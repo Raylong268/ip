@@ -9,9 +9,11 @@ import java.util.Scanner;
 
 public class Storage {
     private File f;
+    private String link;
 
-    public Storage() {
-        this.f = new File("./data/tasks.txt");
+    public Storage(String link) {
+        this.f = new File(link);
+        this.link = link;
         try {
             f.getParentFile().mkdir();
             f.createNewFile();
@@ -52,7 +54,7 @@ public class Storage {
 
     public void resetList(TaskList tasks) throws IOException {
         try {
-            FileWriter fw = new FileWriter("./data/tasks.txt");
+            FileWriter fw = new FileWriter(link);
             for (int i = 0; i < tasks.size(); i++) {
                 Task task = tasks.get(i);
                 fw.write(task.record() + "\n");

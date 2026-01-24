@@ -60,7 +60,7 @@ public class Emu {
         boolean stop = false;
 
         UI ui = new UI();
-        Storage storage = new Storage();
+        Storage storage = new Storage("./data/tasks.txt");
         TaskList tasks;
         try {
             tasks = storage.initialiseList();

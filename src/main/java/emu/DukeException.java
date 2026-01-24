@@ -13,4 +13,8 @@ public class DukeException extends Exception {
           */
         return " UWA!!! " + super.getMessage() + "\n";
     }
+
+    public String realMessage() {
+        return super.getMessage();
+    }
 }
