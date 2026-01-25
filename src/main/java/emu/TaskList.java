@@ -18,14 +18,36 @@ public class TaskList {
     }
 
     public String list() {
-        int listing = 1;
         String temp = "Here are the tasks in your list:\n";
-        while (listing <= tasks.size()) {
-            Task task = tasks.get(listing - 1);
-            temp += listing +
+        for (int i = 1; i <= size(); i++) {
+            Task task = tasks.get(i - 1);
+            temp += i +
                     "." + task.toString() +
                     "\n";
-            listing++;
+        }
+        return temp;
+    }
+
+    /**
+     * Searches for all tasks that have the substring search
+     * in their description and returns their representation in
+     * String form
+     *
+     * @param search Substring to look for in the task description
+     * @return String representation of all the found tasks that
+     * have search as their substring
+     */
+    public String find(String search) {
+        int counter  = 0;
+        String temp = "Here are the matching tasks in your list:\n";
+        for (int i = 1; i <= size(); i++) {
+            Task task = tasks.get(i - 1);
+            if (task.getDescription().contains(search)) {
+                temp += counter +
+                        "." + task.toString() +
+                        "\n";
+            }
+            counter++;
         }
         return temp;
     }

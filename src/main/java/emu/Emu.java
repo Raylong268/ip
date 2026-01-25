@@ -12,6 +12,8 @@ public class Emu {
             return " Bye. Hope to see you again soon!\n";
         } else if (command.equals("list")) {
             return tasks.list();
+        } else if (command.equals("find")) {
+            return tasks.find(other);
         } else if (command.equals("mark")) {
             int number = Parser.handleNumber(other);
             return tasks.mark(number);
