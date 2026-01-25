@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ParserTest {
     @ Test
-    void testHandleDeadline() throws DukeException {
+    void testHandleDeadline() throws EmuException {
         // valid case
         String[] result = Parser.handleDeadline("finish homework /by tomorrow");
         assertEquals("finish homework", result[0]);
@@ -16,7 +16,7 @@ public class ParserTest {
         try {
             Parser.handleDeadline("finish homework tomorrow");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals("You forgot to put /by in your deadline task!",
                     e.realMessage());
         }
@@ -25,7 +25,7 @@ public class ParserTest {
         try {
             Parser.handleDeadline("/by tomorrow");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You can't make a deadline without a description and a date silly!",
                     e.realMessage());
@@ -35,7 +35,7 @@ public class ParserTest {
         try {
             Parser.handleDeadline("finish /by ");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You can't make a deadline without a description and a date silly!",
                     e.realMessage());
@@ -45,7 +45,7 @@ public class ParserTest {
         try {
             Parser.handleDeadline("  ");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You forgot to put /by in your deadline task!",
                     e.realMessage());
@@ -53,7 +53,7 @@ public class ParserTest {
     }
 
     @Test
-    void testHandleEvent() throws DukeException {
+    void testHandleEvent() throws EmuException {
         // valid case
         String[] result = Parser.handleEvent("meeting /from Mon /to Tue");
         assertEquals("meeting", result[0]);
@@ -64,7 +64,7 @@ public class ParserTest {
         try {
             Parser.handleEvent("meeting /to Tue /from Mon");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You put in the wrong format! Use event (desc) /from (from) /to (to) instead!",
                     e.realMessage());
@@ -74,7 +74,7 @@ public class ParserTest {
         try {
             Parser.handleEvent("meeting /from Mon");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You put in the wrong format! Use event (desc) /from (from) /to (to) instead!",
                     e.realMessage());
@@ -84,7 +84,7 @@ public class ParserTest {
         try {
             Parser.handleEvent("meeting Mon /to Tues");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You put in the wrong format! Use event (desc) /from (from) /to (to) instead!",
                     e.realMessage());
@@ -94,7 +94,7 @@ public class ParserTest {
         try {
             Parser.handleEvent(" /from  /to ");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You can't make an event without a description, from date and to date silly!",
                     e.realMessage());
@@ -104,7 +104,7 @@ public class ParserTest {
         try {
             Parser.handleEvent("  ");
             fail("Expected DukeException");
-        } catch (DukeException e) {
+        } catch (EmuException e) {
             assertEquals(
                     "You put in the wrong format! Use event (desc) /from (from) /to (to) instead!",
                     e.realMessage());
