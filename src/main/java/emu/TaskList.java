@@ -29,9 +29,8 @@ public class TaskList {
     }
 
     /**
-     * Searches for all tasks that have the substring search
-     * in their description and returns their representation in
-     * String form
+     * Searches for all tasks in ArrayList that have the substring search
+     * in their description and returns a String that lists them
      *
      * @param search Substring to look for in the task description
      * @return String representation of all the found tasks that
