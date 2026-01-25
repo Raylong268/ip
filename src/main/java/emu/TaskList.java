@@ -38,8 +38,7 @@ public class TaskList {
     }
 
     /**
-     * Returns the string representation of all tasks when listed
-     * in the ArrayList
+     * Returns the string representation of all tasks in the ArrayList when listed
      *
      * @return A string representing the list of tasks
      */
