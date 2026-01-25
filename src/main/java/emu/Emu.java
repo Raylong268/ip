@@ -13,6 +13,7 @@ public class Emu {
         } else if (command.equals("list")) {
             return tasks.list();
         } else if (command.equals("find")) {
+            // Lists all tasks that have other as a substring in the description
             return tasks.find(other);
         } else if (command.equals("mark")) {
             int number = Parser.handleNumber(other);
