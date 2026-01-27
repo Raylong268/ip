@@ -35,7 +35,6 @@ public class UI {
      * @return The inputted message from the user
      */
     public String scan() {
-        String input = scanner.nextLine();
-        return input;
+        return scanner.nextLine();
     }
 }

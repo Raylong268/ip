@@ -12,7 +12,7 @@ import java.util.Scanner;
  * to allow tasks to persist between sessions
  */
 public class Storage {
-    private File f;
+    private File file;
     private String link;
 
     /**
@@ -23,11 +23,11 @@ public class Storage {
      * @param link File path used for storage.
      */
     public Storage(String link) {
-        this.f = new File(link); // File used for storage.
+        this.file = new File(link); // File used for storage.
         this.link = link;
         try {
-            f.getParentFile().mkdir();
-            f.createNewFile();
+            file.getParentFile().mkdir();
+            file.createNewFile();
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -41,10 +41,11 @@ public class Storage {
      */
     public TaskList initialiseList() throws EmuException {
         try {
-            ArrayList<Task> temp = new ArrayList<>();
-            Scanner s = new Scanner(f); // create a Scanner using the File as the source
-            while (s.hasNext()) {
-                String text = s.nextLine();
+            ArrayList<Task> tasks = new ArrayList<>();
+            // create a Scanner using the File as the source
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNext()) {
+                String text = scanner.nextLine();
                 Task task;
                 String[] parts = text.split(" \\| ");
 
@@ -61,9 +62,9 @@ public class Storage {
                 if (parts[1].equals("X")) {
                     task.markDone();
                 }
-                temp.add(task);
+                tasks.add(task);
             }
-            return new TaskList(temp);
+            return new TaskList(tasks);
         } catch (FileNotFoundException e) {
             throw new EmuException("UWA!!! I can't seem to find your past tasks!");
         }
@@ -78,12 +79,12 @@ public class Storage {
      */
     public void resetList(TaskList tasks) throws EmuException {
         try {
-            FileWriter fw = new FileWriter(link);
+            FileWriter fileWriter = new FileWriter(link);
             for (int i = 0; i < tasks.size(); i++) {
                 Task task = tasks.get(i);
-                fw.write(task.record() + "\n");
+                fileWriter.write(task.record() + "\n");
             }
-            fw.close();
+            fileWriter.close();
         } catch (IOException e) {
             throw new EmuException("I couldn't record the tasks!");
         }

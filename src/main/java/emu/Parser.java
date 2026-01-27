@@ -16,9 +16,11 @@ public class Parser {
      */
     public Parser(String fullResponse) {
         int firstSpace = fullResponse.indexOf(' ');
-        this.command = (firstSpace == -1) ? fullResponse
+        this.command = (firstSpace == -1)
+                ? fullResponse
                 : fullResponse.substring(0, firstSpace);
-        this.other = (firstSpace == -1) ? ""
+        this.other = (firstSpace == -1)
+                ? ""
                 : fullResponse.substring(firstSpace + 1);
     }
 
@@ -38,8 +40,7 @@ public class Parser {
      */
     public static void handleTodo(String response) throws EmuException {
         if (response.isEmpty()) {
-            throw new EmuException("You can't make a todo " +
-                    "without a description silly!");
+            throw new EmuException("You can't make a todo without a description silly!");
         }
     }
 
@@ -63,8 +64,7 @@ public class Parser {
         String by = response.substring(slash + 3).trim();
 
         if (desc.isEmpty() || by.isEmpty()) {
-            throw new EmuException("You can't make a deadline " +
-                    "without a description and a date silly!");
+            throw new EmuException("You can't make a deadline without a description and a date silly!");
         }
         return new String[] { desc, by };
     }
@@ -79,22 +79,21 @@ public class Parser {
      * @throws EmuException If String response is invalid for an Event task
      */
     public static String[] handleEvent(String response) throws EmuException {
-        int slashfrom = response.indexOf("/from");
-        int slashto = response.indexOf("/to");
+        int slashFrom = response.indexOf("/from");
+        int slashTo = response.indexOf("/to");
 
-        if (slashfrom == -1 || slashto == -1 || slashto < slashfrom) {
-            throw new EmuException(
-                    "You put in the wrong format! " +
-                            "Use event (desc) /from (from) /to (to) instead!");
+        if (slashFrom == -1 || slashTo == -1 || slashTo < slashFrom) {
+            throw new EmuException("You put in the wrong format! "
+                    + "Use event (desc) /from (from) /to (to) instead!");
         }
 
-        String desc = response.substring(0, slashfrom).trim();
-        String from = response.substring(slashfrom + 5, slashto).trim();
-        String to = response.substring(slashto + 3).trim();
+        String desc = response.substring(0, slashFrom).trim();
+        String from = response.substring(slashFrom + 5, slashTo).trim();
+        String to = response.substring(slashTo + 3).trim();
 
         if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new EmuException("You can't make an event " +
-                    "without a description, from date and to date silly!");
+            throw new EmuException("You can't make an event without a description, "
+                    + "from date and to date silly!");
         }
         return new String[] { desc, from, to };
     }

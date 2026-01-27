@@ -43,14 +43,10 @@ public class TaskList {
      * @return A string representing the list of tasks
      */
     public String list() {
-        int listing = 1;
         String temp = "Here are the tasks in your list:\n";
-        while (listing <= tasks.size()) {
-            Task task = tasks.get(listing - 1);
-            temp += listing +
-                    "." + task.toString() +
-                    "\n";
-            listing++;
+        for (int i = 1; i <= tasks.size(); i++) {
+            Task task = tasks.get(i - 1);
+            temp += i + "." + task.toString() + "\n";
         }
         return temp;
     }
@@ -105,8 +101,8 @@ public class TaskList {
         ToDo task = new ToDo(desc);
         tasks.add(task);
         return "  Got it. I've added this task:\n" +
-               "    " + task.toString() + "\n" +
-               "  Now you have " + tasks.size() + " tasks in your list\n";
+                "    " + task.toString() + "\n" +
+                "  Now you have " + tasks.size() + " tasks in your list\n";
     }
 
     /**
@@ -122,8 +118,8 @@ public class TaskList {
         Deadline task = new Deadline(desc, by);
         tasks.add(task);
         return "  Got it. I've added this task:\n" +
-               "    " + task.toString() + "\n" +
-               "  Now you have " + tasks.size() + " tasks in your list\n";
+                "    " + task.toString() + "\n" +
+                "  Now you have " + tasks.size() + " tasks in your list\n";
     }
 
     /**

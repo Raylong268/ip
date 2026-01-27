@@ -4,8 +4,8 @@ package emu;
  * Defines common variables and methods shared by all task types.
  */
 public abstract class Task {
-    protected String description;
-    protected boolean isDone; // represents if a task is completed
+    private String description;
+    private boolean isDone; // represents if a task is completed
 
     /**
      * Initialises the common variables shared by all tasks.
@@ -59,6 +59,7 @@ public abstract class Task {
      *
      * @return String representation used for listing
      */
+    @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }

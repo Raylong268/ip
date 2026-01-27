@@ -9,8 +9,8 @@ import java.time.format.DateTimeParseException;
  * inheriting from parent class Task
  */
 public class Deadline extends Task {
-    protected String by;
-    private LocalDate byDate = null; //LocalDate version of by Date
+    private String by;
+    private LocalDate byDate; //LocalDate version of by Date
 
     /**
      * Initialises a Deadline task. Tries converting String by to

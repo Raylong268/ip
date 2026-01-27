@@ -21,8 +21,8 @@ public class Emu {
      * @return A string representing the response given
      * after doing the command
      */
-    public String respond(TaskList tasks, Storage storage,
-                          String command, String other) throws EmuException {
+    public String respond(TaskList tasks, Storage storage, String command, String other)
+            throws EmuException {
         if (command.equals("bye")) {
             // Stores the TaskList back into Storage
             storage.resetList(tasks);
@@ -56,7 +56,7 @@ public class Emu {
             return tasks.delete(number);
         } else {
              // Throws EmuException for invalid command
-            throw new EmuException("I don't get what that means!!");
+            throw new EmuException("I don't get what that means!");
         }
     }
 
@@ -67,12 +67,10 @@ public class Emu {
     public static void main(String[] args) {
         // Initialises all the needed components
         Emu emu = new Emu();
-        Scanner scanner = new Scanner(System.in);
-        boolean stop = false;
-
         UI ui = new UI();
         Storage storage = new Storage("./data/tasks.txt");
         TaskList tasks;
+
         try {
             tasks = storage.initialiseList();
         } catch (EmuException e) {
@@ -80,8 +78,7 @@ public class Emu {
             tasks = new TaskList(new ArrayList<Task>());
         }
 
-        // Continues scanning, until the command given is "bye"
-        while (!stop) {
+        while (true) {
             try {
                 String input = ui.scan();
                 // Parses the input into the command and other portions

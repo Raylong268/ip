@@ -9,10 +9,10 @@ import java.time.format.DateTimeParseException;
  * and to Date/String, inheriting from parent class Task
  */
 public class Event extends Task {
-    protected String from;
-    protected String to;
-    private LocalDate fromDate = null; //LocalDate version of from Date
-    private LocalDate toDate = null; //LocalDate version of to Date
+    private String from;
+    private String to;
+    private LocalDate fromDate; //LocalDate version of from Date
+    private LocalDate toDate; //LocalDate version of to Date
 
     /**
      * Initialises an Event task. Tries converting String from

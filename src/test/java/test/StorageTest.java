@@ -1,17 +1,27 @@
-import emu.*;
-import org.junit.jupiter.api.Test;
+package test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import emu.Deadline;
+import emu.EmuException;
+import emu.Event;
+import emu.Storage;
+import emu.Task;
+import emu.TaskList;
+import emu.ToDo;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
 
-public class ScannerTest {
+public class StorageTest {
     @Test
-    public void testInitialiseList()  {
+    public void testInitialiseList() {
         // 3 different types of test tasks
         String testTodoMark = "T | X | task\n";
         String testDeadlineUnmark = "D |   | time | something\n";
@@ -94,5 +104,4 @@ public class ScannerTest {
             fail(); // the test should not reach this line
         }
     }
-
 }
