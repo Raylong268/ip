@@ -66,8 +66,8 @@ public class TaskList {
             Task task = tasks.get(i - 1);
             if (task.getDescription().contains(search)) {
                 temp += counter + "." + task.toString() + "\n";
+                counter++;
             }
-            counter++;
         }
         return temp;
     }
