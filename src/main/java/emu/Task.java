@@ -1,20 +1,22 @@
 package emu;
 
-public class Task {
+/**
+ * Defines common variables and methods shared by all task types.
+ */
+public abstract class Task {
     protected String description;
-    protected boolean isDone;
+    protected boolean isDone; // represents if a task is completed
 
+    /**
+     * Initialises the common variables shared by all tasks.
+     *
+     * @param description Description of the task.
+     */
     public Task(String description) {
-        /*
-         initialises a task with all required info
-         */
         this.description = description;
         this.isDone = false;
     }
 
-    /*
-     getters for statusIcon and description
-     */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }
@@ -23,22 +25,39 @@ public class Task {
         return description;
     }
 
-    /*
-     allows a task to be marked/unmarked
+    /**
+     * Marks a task as completed
      */
     public void markDone() {
         isDone = true;
     }
 
+    /**
+     * Marks a task as incomplete
+     */
     public void markUndone() {
         isDone = false;
     }
 
+    /**
+     * Returns the additional parts required for the
+     * string representation of a task when stored on hard disk.
+     * Subclasses may override this method to provide
+     * task-specific string additions
+     *
+     * @return String representation used for writing to hard disk
+     */
     public String record() {
         return " | " + getStatusIcon() + " | " + description;
     }
-    /*
-     string representation of a task
+
+    /**
+     * Returns the additional parts required for the
+     * string representation of a task when listed
+     * Subclasses may override this method to provide
+     * task-specific string additions
+     *
+     * @return String representation used for listing
      */
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;

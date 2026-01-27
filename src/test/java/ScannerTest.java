@@ -48,7 +48,7 @@ public class ScannerTest {
             TaskList sample = new TaskList(correctTasks);
 
             assertEquals(sample.list(), tasks.list());
-        } catch (IOException | DukeException e) {
+        } catch (IOException | EmuException e) {
             fail(); // the test should not reach this line
         }
     }
@@ -90,7 +90,7 @@ public class ScannerTest {
                     "E |   | now | some | thing\n";
 
             assertEquals(expected, text);
-        } catch (IOException e) {
+        } catch (IOException | EmuException e) {
             fail(); // the test should not reach this line
         }
     }

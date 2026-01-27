@@ -7,12 +7,23 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Stores and loads the tasks from the hard drive
+ * to allow tasks to persist between sessions
+ */
 public class Storage {
     private File f;
     private String link;
 
+    /**
+     * Initialises a Storage using the given file path.
+     * If the file or its parent directory does not exist,
+     * they will be created.
+     *
+     * @param link File path used for storage.
+     */
     public Storage(String link) {
-        this.f = new File(link);
+        this.f = new File(link); // File used for storage.
         this.link = link;
         try {
             f.getParentFile().mkdir();
@@ -22,7 +33,13 @@ public class Storage {
         }
     }
 
-    public TaskList initialiseList() throws DukeException {
+    /**
+     * Recreates the TaskList from the text-file given in constructor
+     *
+     * @return The TaskList representation of the text in the text-file
+     * @throws EmuException If the scanner is unable to read the file
+     */
+    public TaskList initialiseList() throws EmuException {
         try {
             ArrayList<Task> temp = new ArrayList<>();
             Scanner s = new Scanner(f); // create a Scanner using the File as the source
@@ -48,11 +65,18 @@ public class Storage {
             }
             return new TaskList(temp);
         } catch (FileNotFoundException e) {
-            throw new DukeException("UWA!!! I can't seem to find your past tasks!");
+            throw new EmuException("UWA!!! I can't seem to find your past tasks!");
         }
     }
 
-    public void resetList(TaskList tasks) throws IOException {
+    /**
+     * Records the current TaskList back into the text-file
+     * given in constructor, to store the tasks for future sessions
+     *
+     * @param tasks The up-to-date list of tasks
+     * @throws EmuException If the FileWriter is unable to record the tasks into the file
+     */
+    public void resetList(TaskList tasks) throws EmuException {
         try {
             FileWriter fw = new FileWriter(link);
             for (int i = 0; i < tasks.size(); i++) {
@@ -61,7 +85,7 @@ public class Storage {
             }
             fw.close();
         } catch (IOException e) {
-            System.out.println(e);
+            throw new EmuException("I couldn't record the tasks!");
         }
     }
 }
