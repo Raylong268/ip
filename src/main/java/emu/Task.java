@@ -1,8 +1,8 @@
 package emu;
 
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private String description;
+    private boolean isDone;
 
     public Task(String description) {
         /*
@@ -37,9 +37,11 @@ public class Task {
     public String record() {
         return " | " + getStatusIcon() + " | " + description;
     }
+
     /*
      string representation of a task
      */
+    @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }

@@ -17,7 +17,6 @@ public class UI {
     }
 
     public String scan() {
-        String input = scanner.nextLine();
-        return input;
+        return scanner.nextLine();
     }
 }

@@ -1,11 +1,15 @@
-import emu.*;
-import org.junit.jupiter.api.Test;
+package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.junit.jupiter.api.Test;
+
+import emu.DukeException;
+import emu.Parser;
+
 public class ParserTest {
-    @ Test
+    @Test
     void testHandleDeadline() throws DukeException {
         // valid case
         String[] result = Parser.handleDeadline("finish homework /by tomorrow");

@@ -1,12 +1,11 @@
 package emu;
 
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Emu {
-    public String respond(TaskList tasks, Storage storage,
-                          String command, String other) throws DukeException, IOException {
+    public String respond(TaskList tasks, Storage storage, String command, String other)
+            throws DukeException, IOException {
         if (command.equals("bye")) {
             storage.resetList(tasks);
             return " Bye. Hope to see you again soon!\n";
@@ -50,18 +49,16 @@ public class Emu {
              /*
             throws a dukeException for invalid command
              */
-            throw new DukeException("I don't get what that means!!");
+            throw new DukeException("I don't get what that means!");
         }
     }
 
     public static void main(String[] args) {
         Emu emu = new Emu();
-        Scanner scanner = new Scanner(System.in);
-        boolean stop = false;
-
         UI ui = new UI();
         Storage storage = new Storage("./data/tasks.txt");
         TaskList tasks;
+
         try {
             tasks = storage.initialiseList();
         } catch (DukeException e) {
@@ -69,17 +66,19 @@ public class Emu {
             tasks = new TaskList(new ArrayList<Task>());
         }
 
-        while (!stop) {
+        while (true) {
              /*
             continues scanning, until "bye" input sets
-            stop to true
+            isStopped to true
              */
             try {
                 String input = ui.scan();
                 Parser parts = new Parser(input);
+
                 String response = emu.respond(tasks, storage,
-                                              parts.getCommand(), parts.getOther());
+                        parts.getCommand(), parts.getOther());
                 ui.respond(response);
+
                 if (parts.getCommand().equals("bye")) {
                     break;
                 }
