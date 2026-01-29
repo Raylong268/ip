@@ -62,6 +62,7 @@ public class Storage {
                 if (parts[1].equals("X")) {
                     task.markDone();
                 }
+
                 tasks.add(task);
             }
             return new TaskList(tasks);
