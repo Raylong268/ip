@@ -49,8 +49,7 @@ public class Parser {
      * a Deadline task.
      *
      * @param response The provided string to be parsed to make a Deadline task
-     * @return A string array containing the parsed response used for
-     * making a Deadline Task
+     * @return A string array containing the parsed response used for making a Deadline Task
      * @throws EmuException If String response is invalid for a Deadline task
      */
     public static String[] handleDeadline(String response) throws EmuException {
@@ -74,8 +73,7 @@ public class Parser {
      * an Event task.
      *
      * @param response The provided string to be parsed to make an Event task
-     * @return A string array containing the parsed response used for
-     * making an Event Task
+     * @return A string array containing the parsed response used for making an Event Task
      * @throws EmuException If String response is invalid for an Event task
      */
     public static String[] handleEvent(String response) throws EmuException {

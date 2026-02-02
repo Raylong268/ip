@@ -48,8 +48,7 @@ public class Event extends Task {
      * Creates the string representation of the task
      * in hard disk
      *
-     * @return String representation of an Event task used for writing to
-     * hard disk
+     * @return String representation of an Event task used for writing to hard disk
      */
     public String record() {
         return "E" + super.record() + " | " + from + " | " + to;

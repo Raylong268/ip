@@ -1,9 +1,8 @@
 package gui;
 
-import emu.Emu;
-
 import java.io.IOException;
 
+import emu.Emu;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,7 +23,8 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().initialise(emu);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().initialise(emu);
+            // inject the Duke instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

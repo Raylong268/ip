@@ -18,8 +18,7 @@ public class ToDo extends Task {
      * Creates the string representation of the task
      * in hard disk
      *
-     * @return String representation of a ToDo task used for writing to
-     * hard disk
+     * @return String representation of a ToDo task used for writing to hard disk
      */
     @Override
     public String record() {

@@ -56,8 +56,7 @@ public class TaskList {
      * in their description and returns a String that lists them
      *
      * @param search Substring to look for in the task description
-     * @return String representation of all the found tasks that
-     * have search as their substring
+     * @return String representation of all the found tasks with the substring
      */
     public String find(String search) {
         int counter = 0;
@@ -77,15 +76,14 @@ public class TaskList {
      * as completed, and responds with a String of the newly marked task
      *
      * @param number The position of the Task in the ArrayList
-     * @return A string representing the response given after
-     * marking the task
+     * @return A string representing the response given after marking the task
      */
     public String mark(int number) throws EmuException {
         if (number <= tasks.size()) {
             Task task = tasks.get(number - 1);
             task.markDone();
-            return "  Nice! I've marked this task as done:\n" +
-                    "    " + task.toString() + "\n";
+            return "  Nice! I've marked this task as done:\n"
+                    + "    " + task.toString() + "\n";
         } else {
             throw new EmuException("That's not a valid task silly!");
         }
@@ -96,15 +94,14 @@ public class TaskList {
      * and responds with a String of the newly unmarked task
      *
      * @param number The position of the Task in the ArrayList
-     * @return A string representing the response given after
-     * unmarking the task
+     * @return A string representing the response given after unmarking the task
      */
     public String unmark(int number) throws EmuException {
         if (number <= tasks.size()) {
             Task task = tasks.get(number - 1);
             task.markUndone();
-            return "  OK, I've marked this task as not done yet:\n" +
-                    "    " + task.toString() + "\n";
+            return "  OK, I've marked this task as not done yet:\n"
+                    + "    " + task.toString() + "\n";
         } else {
             throw new EmuException("That's not a valid task silly!");
         }
@@ -115,15 +112,13 @@ public class TaskList {
      * desc, and returns a String displaying the added task
      *
      * @param desc The description of the added ToDo Task
-     * @return A string representing the response given after adding the
-     * ToDo task
+     * @return A string representing the response given after adding the ToDo task
      */
     public String todo(String desc) {
         ToDo task = new ToDo(desc);
         tasks.add(task);
-        return "  Got it. I've added this task:\n" +
-                "    " + task.toString() + "\n" +
-                "  Now you have " + tasks.size() + " tasks in your list\n";
+        return "  Got it. I've added this task:\n" + "    " + task.toString() + "\n"
+                + "  Now you have " + tasks.size() + " tasks in your list\n";
     }
 
     /**
@@ -132,15 +127,13 @@ public class TaskList {
      *
      * @param desc The description of the added Deadline Task
      * @param by The by Date/String of the added Deadline Task
-     * @return A string representing the response given after adding the
-     * Deadline task
+     * @return A string representing the response given after adding the Deadline task
      */
     public String deadline(String desc, String by) {
         Deadline task = new Deadline(desc, by);
         tasks.add(task);
-        return "  Got it. I've added this task:\n" +
-                "    " + task.toString() + "\n" +
-                "  Now you have " + tasks.size() + " tasks in your list\n";
+        return "  Got it. I've added this task:\n" + "    " + task.toString() + "\n"
+                + "  Now you have " + tasks.size() + " tasks in your list\n";
     }
 
     /**
@@ -151,15 +144,14 @@ public class TaskList {
      * @param desc The description of the added Event Task
      * @param from The from Date/String of the added Event Task
      * @param to The to Date/String of the added Event Task
-     * @return A string representing the response given after adding the
-     * Event task
+     * @return A string representing the response given after adding the Event task
      */
     public String event(String desc, String from, String to) {
         Event task = new Event(desc, from, to);
         tasks.add(task);
-        return "  Got it. I've added this task:\n" +
-                "    " + task.toString() + "\n" +
-                "  Now you have " + tasks.size() + " tasks in your list\n";
+        return "  Got it. I've added this task:\n"
+                + "    " + task.toString() + "\n"
+                + "  Now you have " + tasks.size() + " tasks in your list\n";
     }
 
     /**
@@ -167,15 +159,13 @@ public class TaskList {
      * and responds with a String of the deleted task
      *
      * @param number The position of the Task in the ArrayList
-     * @return A string representing the response given after
-     * deleting the task
+     * @return A string representing the response given after deleting the task
      */
     public String delete(int number) throws EmuException {
         if (number <= tasks.size()) {
             Task task = tasks.remove(number - 1);
-            return "  Got it. I've removed this task:\n" +
-                    "    " + task.toString() + "\n" +
-                    "  Now you have " + tasks.size() + " tasks in your list\n";
+            return "  Got it. I've removed this task:\n" + "    " + task.toString() + "\n"
+                    + "  Now you have " + tasks.size() + " tasks in your list\n";
         } else {
             throw new EmuException("That's not a valid task silly!");
         }

@@ -14,7 +14,7 @@ public class UI {
      * @return String representation of greeting
      */
     public String greeting() {
-       return " Hello, I'm Emu!\n" + " What can I do for you?\n";
+        return " Hello, I'm Emu!\n" + " What can I do for you?\n";
     }
 
     /**

@@ -35,8 +35,7 @@ public class Deadline extends Task {
      * Creates the string representation of the task
      * in hard disk
      *
-     * @return String representation of a Deadline task used for writing to
-     * hard disk
+     * @return String representation of a Deadline task used for writing to hard disk
      */
     public String record() {
         return "D" + super.record() + " | " + by;

@@ -1,6 +1,5 @@
 package emu;
 
-import java.util.Scanner;
 import java.util.ArrayList;
 
 /**
@@ -13,8 +12,10 @@ public class Emu {
     private UI ui;
     private boolean isExit; // Represents if the chatbot needs to close
 
+    /**
+     * Initialises the storage, UI and TaskList
+     */
     public Emu() {
-        // Initialises the storage, UI and TaskList
         this.storage = new Storage("./data/tasks.txt");
         this.ui = new UI();
         this.tasks = new TaskList(new ArrayList<Task>());
@@ -24,8 +25,8 @@ public class Emu {
     /**
      * Initialises the TaskList for Emu and returns any error messages
      *
-     * @return A string representing if the initialisation failed,
-     * otherwise a string representing the standard greeting
+     * @return A string representing the standard greeting,
+     *     otherwise a string representing if the initialisation failed
      */
     public String initialiseTaskList() {
         try {
@@ -46,8 +47,7 @@ public class Emu {
      * the formatted String response for the user
      *
      * @param input The input given by the user
-     * @return A string representing the response given
-     * after doing the command
+     * @return A string representing the response given after doing the command
      */
     public String respond(String input) {
         // Parses the input into command and other portions
