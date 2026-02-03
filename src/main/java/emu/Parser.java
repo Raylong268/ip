@@ -15,10 +15,13 @@ public class Parser {
      * @param fullResponse The response given from the user
      */
     public Parser(String fullResponse) {
+        assert fullResponse != null : "fullResponse should not be null";
+
         int firstSpace = fullResponse.indexOf(' ');
         this.command = (firstSpace == -1)
                 ? fullResponse
                 : fullResponse.substring(0, firstSpace);
+
         this.other = (firstSpace == -1)
                 ? ""
                 : fullResponse.substring(firstSpace + 1);
@@ -39,6 +42,8 @@ public class Parser {
      * @throws EmuException If String response is invalid for a ToDo task
      */
     public static void handleTodo(String response) throws EmuException {
+        assert response != null : "response should not be null";
+
         if (response.isEmpty()) {
             throw new EmuException("You can't make a todo without a description silly!");
         }
@@ -53,6 +58,8 @@ public class Parser {
      * @throws EmuException If String response is invalid for a Deadline task
      */
     public static String[] handleDeadline(String response) throws EmuException {
+        assert response != null : "response should not be null";
+
         int slash = response.indexOf("/by");
 
         if (slash == -1) {
@@ -77,6 +84,8 @@ public class Parser {
      * @throws EmuException If String response is invalid for an Event task
      */
     public static String[] handleEvent(String response) throws EmuException {
+        assert response != null : "response should not be null";
+
         int slashFrom = response.indexOf("/from");
         int slashTo = response.indexOf("/to");
 
@@ -105,6 +114,8 @@ public class Parser {
      * @throws EmuException If String stringNumber is not actually an int
      */
     public static int handleNumber(String stringNumber) throws EmuException {
+        assert stringNumber != null : "stringNumber should not be null";
+
         try {
             return Integer.parseInt(stringNumber);
         } catch (NumberFormatException e) {

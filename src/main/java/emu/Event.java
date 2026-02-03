@@ -25,6 +25,11 @@ public class Event extends Task {
     public Event(String description, String from, String to) {
         super(description); // calls parent Task constructor
 
+        assert from != null : "from String should not be null";
+        assert !from.isEmpty() : "from String should not be empty";
+        assert to != null : "to String should not be null";
+        assert !to.isEmpty() : "to String should not be empty";
+
         try {
             // tries converting the string to LocalDate
             this.fromDate = LocalDate.parse(from);
