@@ -1,38 +1,40 @@
 package emu;
 
 /**
- * Represents a ToDo Task that only has a description,
- * inherits from parent class Task
+ * Represents a to-do task that has only a description
  */
 public class ToDo extends Task {
+    private static final String STORAGE_MARKER = "T";
+    private static final String DISPLAY_MARKER = "[T]";
+
     /**
-     * Initialises a ToDo task
+     * Initialises a To-Do task
      *
-     * @param description description of ToDo Task
+     * @param description Description of the To-Do task
      */
     public ToDo(String description) {
-        super(description); // calls parent Task constructor
+        super(description);
     }
 
     /**
-     * Creates the string representation of the task
-     * in hard disk
+     * Returns the string representation of the task
+     * for storage on hard disk
      *
-     * @return String representation of a ToDo task used for writing to hard disk
+     * @return Storage format of a to-do task
      */
     @Override
-    public String record() {
-        return "T" + super.record();
+    public String toStorageString() {
+        return STORAGE_MARKER + super.toStorageString();
     }
 
     /**
-     * Creates the string representation of the task
-     * when listed
+     * Returns the string representation of the task
+     * when listed to the user
      *
-     * @return String representation of a ToDo task when listed
+     * @return Display format of a to-do task
      */
     @Override
     public String toString() {
-        return "[T]" + super.toString();
+        return DISPLAY_MARKER + super.toString();
     }
 }

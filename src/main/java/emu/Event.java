@@ -5,63 +5,67 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * Represents an Event Task with a description, from Date/String,
- * and to Date/String, inheriting from parent class Task
+ * Represents an event task with a description, start, and end date
  */
 public class Event extends Task {
+    private static final String STORAGE_MARKER = "E";
+    private static final String DISPLAY_MARKER = "[E]";
+    private static final DateTimeFormatter DATE_FORMATTER =
+            DateTimeFormatter.ofPattern("MMM d yyyy");
+
     private String from;
     private String to;
-    private LocalDate fromDate; //LocalDate version of from Date
-    private LocalDate toDate; //LocalDate version of to Date
 
     /**
-     * Initialises an Event task. Tries converting String from
-     * and String to a LocalDate, if fails it defaults to the String itself.
+     * Initialises an event task
+     * Tries converting {@code from} and {@code to} to LocalDate
+     * If fails, defaults to original string
      *
-     * @param description description of Event Task
-     * @param from from Date/String of Event Task
-     * @param to to Date/String of Event Task
+     * @param description Description of the event task
+     * @param from Start date as a string
+     * @param to End date as a string
      */
     public Event(String description, String from, String to) {
-        super(description); // calls parent Task constructor
-
-        try {
-            // tries converting the string to LocalDate
-            this.fromDate = LocalDate.parse(from);
-            this.from = fromDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
-        } catch (DateTimeParseException e) {
-            // defaults to regular string if conversion fails
-            this.from = from;
-        }
-
-        try {
-            // tries converting the string to LocalDate
-            this.toDate = LocalDate.parse(to);
-            this.to = toDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
-        } catch (DateTimeParseException e) {
-            // defaults to regular string if conversion fails
-            this.to = to;
-        }
+        super(description);
+        this.from = parseDateString(from);
+        this.to = parseDateString(to);
     }
 
     /**
-     * Creates the string representation of the task
-     * in hard disk
+     * Parses a date string into a formatted date string
+     * If parsing fails, returns the original string
      *
-     * @return String representation of an Event task used for writing to hard disk
+     * @param dateStr Input date string
+     * @return Formatted date string if valid, otherwise original string
      */
-    public String record() {
-        return "E" + super.record() + " | " + from + " | " + to;
+    private String parseDateString(String dateStr) {
+        try {
+            LocalDate date = LocalDate.parse(dateStr);
+            return date.format(DATE_FORMATTER);
+        } catch (DateTimeParseException e) {
+            return dateStr;
+        }
     }
 
     /**
-     * Creates the string representation of the task
-     * when listed
+     * Returns the string representation of the task
+     * for storage on hard disk
      *
-     * @return String representation of an Event task when listed
+     * @return Storage format of an event task
+     */
+    @Override
+    public String toStorageString() {
+        return STORAGE_MARKER + super.toStorageString() + " | " + from + " | " + to;
+    }
+
+    /**
+     * Returns the string representation of the task
+     * when listed to the user
+     *
+     * @return Display format of an event task
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        return DISPLAY_MARKER + super.toString() + " (from: " + from + " to: " + to + ")";
     }
 }

@@ -1,18 +1,18 @@
 package emu;
 
 /**
- * Parses the text inputted by the user
- * to make sense of the command
+ * Parses user input to determine the command type
+ * and its associated parameters
  */
 public class Parser {
-    private String command; // The portion that dictates the method used
-    private String other; // The portion parsed and inputted into the method
+    private final String command; // Command portion that dictates which method to invoke
+    private final String other; // Remaining portion passed as argument to method
 
     /**
-     * Initialises the Parser with the response provided by the user,
-     * and splits it into it's command and other portions
+     * Creates a Parser from the full user response, splitting
+     * it into command and other components
      *
-     * @param fullResponse The response given from the user
+     * @param fullResponse Full input string from the user
      */
     public Parser(String fullResponse) {
         int firstSpace = fullResponse.indexOf(' ');
@@ -25,64 +25,62 @@ public class Parser {
     }
 
     public String getCommand() {
-        return this.command;
+        return command;
     }
 
+
     public String getOther() {
-        return this.other;
+        return other;
     }
 
     /**
-     * Validates the String response for making a ToDo task
+     * Validates the response for creating a ToDo task
      *
-     * @param response The provided string to be verified to make a Deadline task
-     * @throws EmuException If String response is invalid for a ToDo task
+     * @param response User input for a ToDo task
+     * @throws EmuException If the response is empty
      */
-    public static void handleTodo(String response) throws EmuException {
+    public static void verifyTodo(String response) throws EmuException {
         if (response.isEmpty()) {
-            throw new EmuException("You can't make a todo without a description silly!");
+            throw new EmuException("You can't make a todo without a description!");
         }
     }
 
     /**
-     * Validates and parses the given String response for making
-     * a Deadline task.
+     * Validates and parses the response for creating a Deadline task
      *
-     * @param response The provided string to be parsed to make a Deadline task
-     * @return A string array containing the parsed response used for making a Deadline Task
-     * @throws EmuException If String response is invalid for a Deadline task
+     * @param response User input for a Deadline task
+     * @return A String array containing description and date
+     * @throws EmuException If response is missing /by or description/date is empty
      */
-    public static String[] handleDeadline(String response) throws EmuException {
+    public static String[] parseDeadline(String response) throws EmuException {
         int slash = response.indexOf("/by");
-
         if (slash == -1) {
-            throw new EmuException("You forgot to put /by in your deadline task!");
+            throw new EmuException("You forgot to include /by in your deadline task!");
         }
 
         String desc = response.substring(0, slash).trim();
         String by = response.substring(slash + 3).trim();
 
         if (desc.isEmpty() || by.isEmpty()) {
-            throw new EmuException("You can't make a deadline without a description and a date silly!");
+            throw new EmuException("Deadline must have both a description and a date!");
         }
+
         return new String[] { desc, by };
     }
 
     /**
-     * Validates and parses the given String response for making
-     * an Event task.
+     * Validates and parses the response for creating an Event task
      *
-     * @param response The provided string to be parsed to make an Event task
-     * @return A string array containing the parsed response used for making an Event Task
-     * @throws EmuException If String response is invalid for an Event task
+     * @param response User input for an Event task
+     * @return A String array containing description, from, and to dates
+     * @throws EmuException If format is incorrect or any field is empty
      */
-    public static String[] handleEvent(String response) throws EmuException {
+    public static String[] parseEvent(String response) throws EmuException {
         int slashFrom = response.indexOf("/from");
         int slashTo = response.indexOf("/to");
 
         if (slashFrom == -1 || slashTo == -1 || slashTo < slashFrom) {
-            throw new EmuException("You put in the wrong format! "
-                    + "Use event (desc) /from (from) /to (to) instead!");
+            throw new EmuException("Incorrect format! Use: event (desc) /from (start) /to (end)");
         }
 
         String desc = response.substring(0, slashFrom).trim();
@@ -90,25 +88,24 @@ public class Parser {
         String to = response.substring(slashTo + 3).trim();
 
         if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new EmuException("You can't make an event without a description, "
-                    + "from date and to date silly!");
+            throw new EmuException("Event must have description, start, and end dates!");
         }
+
         return new String[] { desc, from, to };
     }
 
     /**
-     * Validates the stringNumber given in the response is a
-     * valid number before turning it into an int
+     * Validates that the given string represents a valid integer
      *
-     * @param stringNumber The provided string to be converted to an int
-     * @return The int created from converting the string
-     * @throws EmuException If String stringNumber is not actually an int
+     * @param stringNumber String to convert to int
+     * @return Parsed integer value
+     * @throws EmuException If string is not a valid integer
      */
-    public static int handleNumber(String stringNumber) throws EmuException {
+    public static int parseNumber(String stringNumber) throws EmuException {
         try {
             return Integer.parseInt(stringNumber);
         } catch (NumberFormatException e) {
-            throw new EmuException("That's not a valid number silly!");
+            throw new EmuException("That's not a valid number!");
         }
     }
 }

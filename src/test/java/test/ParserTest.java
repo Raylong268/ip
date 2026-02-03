@@ -12,13 +12,13 @@ public class ParserTest {
     @ Test
     void testHandleDeadline() throws EmuException {
         // valid case
-        String[] result = Parser.handleDeadline("finish homework /by tomorrow");
+        String[] result = Parser.parseDeadline("finish homework /by tomorrow");
         assertEquals("finish homework", result[0]);
         assertEquals("tomorrow", result[1]);
 
         // missing /by
         try {
-            Parser.handleDeadline("finish homework tomorrow");
+            Parser.parseDeadline("finish homework tomorrow");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals("You forgot to put /by in your deadline task!",
@@ -27,7 +27,7 @@ public class ParserTest {
 
         // empty description
         try {
-            Parser.handleDeadline("/by tomorrow");
+            Parser.parseDeadline("/by tomorrow");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(
@@ -37,7 +37,7 @@ public class ParserTest {
 
         // empty /by
         try {
-            Parser.handleDeadline("finish /by ");
+            Parser.parseDeadline("finish /by ");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(
@@ -47,7 +47,7 @@ public class ParserTest {
 
         // empty
         try {
-            Parser.handleDeadline("  ");
+            Parser.parseDeadline("  ");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(
@@ -59,14 +59,14 @@ public class ParserTest {
     @Test
     void testHandleEvent() throws EmuException {
         // valid case
-        String[] result = Parser.handleEvent("meeting /from Mon /to Tue");
+        String[] result = Parser.parseEvent("meeting /from Mon /to Tue");
         assertEquals("meeting", result[0]);
         assertEquals("Mon", result[1]);
         assertEquals("Tue", result[2]);
 
         // /to and /from swapped
         try {
-            Parser.handleEvent("meeting /to Tue /from Mon");
+            Parser.parseEvent("meeting /to Tue /from Mon");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(
@@ -76,7 +76,7 @@ public class ParserTest {
 
         // missing /to
         try {
-            Parser.handleEvent("meeting /from Mon");
+            Parser.parseEvent("meeting /from Mon");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(
@@ -86,7 +86,7 @@ public class ParserTest {
 
         // missing /from
         try {
-            Parser.handleEvent("meeting Mon /to Tues");
+            Parser.parseEvent("meeting Mon /to Tues");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(
@@ -96,7 +96,7 @@ public class ParserTest {
 
         // empty fields
         try {
-            Parser.handleEvent(" /from  /to ");
+            Parser.parseEvent(" /from  /to ");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(
@@ -106,7 +106,7 @@ public class ParserTest {
 
         // empty
         try {
-            Parser.handleEvent("  ");
+            Parser.parseEvent("  ");
             fail("Expected DukeException");
         } catch (EmuException e) {
             assertEquals(

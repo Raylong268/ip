@@ -1,30 +1,38 @@
 package emu;
 
 /**
- * Manages the conversation format between the chatbot and the user
+ * Handles formatting of messages shown to the user
  */
 public class UI {
-    // Line used to wrap around responses
-    private String line =
+    private static final String DIVIDER_LINE =
             "_______________________________________________________\n";
+    private static final String STANDARD_GREETING =
+            " Hello, I'm Emu!\n What can I do for you?\n";
+    private static final String STORAGE_FAILURE =
+            "UWA!!! I can't seem to find your past tasks!";
 
     /**
-     * Returns the initial greeting message.
+     * Returns the initial greeting message,
+     * with additional message if storage failed to initialise
      *
-     * @return String representation of greeting
+     * @param hasStorageFailed If storage has failed to initialise
+     * @return Greeting message
      */
-    public String greeting() {
-        return " Hello, I'm Emu!\n" + " What can I do for you?\n";
+    public String giveGreeting(boolean hasStorageFailed) {
+        if (hasStorageFailed) {
+            return STANDARD_GREETING + STORAGE_FAILURE;
+        } else {
+            return STANDARD_GREETING;
+        }
     }
 
     /**
-     * Manages the format of the given response and
-     * returns the correct string
+     * Formats a response message for display to the user
      *
      * @param response Text to be formatted
      * @return Formatted text
      */
-    public String format(String response) {
-        return line + response + line;
+    public String formatResponse(String response) {
+        return DIVIDER_LINE + response + DIVIDER_LINE;
     }
 }

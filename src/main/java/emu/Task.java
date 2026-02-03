@@ -1,11 +1,12 @@
 package emu;
 
 /**
- * Defines common variables and methods shared by all task types.
+ * Defines common variables and methods shared by all task types
+ * Each task has a description and a completion status
  */
 public abstract class Task {
     private String description;
-    private boolean isDone; // represents if a task is completed
+    private boolean isComplete;
 
     /**
      * Initialises the common variables shared by all tasks.
@@ -14,48 +15,38 @@ public abstract class Task {
      */
     public Task(String description) {
         this.description = description;
-        this.isDone = false;
+        this.isComplete = false;
     }
 
     public String getStatusIcon() {
-        return (isDone ? "X" : " ");
+        return (isComplete ? "X" : " ");
     }
 
     public String getDescription() {
         return description;
     }
 
-    /**
-     * Marks a task as completed
-     */
-    public void markDone() {
-        isDone = true;
+    public void markComplete() {
+        isComplete = true;
+    }
+
+    public void markIncomplete() {
+        isComplete = false;
     }
 
     /**
-     * Marks a task as incomplete
-     */
-    public void markUndone() {
-        isDone = false;
-    }
-
-    /**
-     * Returns the additional parts required for the
-     * string representation of a task when stored on hard disk.
-     * Subclasses may override this method to provide
-     * task-specific string additions
+     * Returns string for storage on hard disk
+     * Subclasses may append extra information
      *
      * @return String representation used for writing to hard disk
      */
-    public String record() {
+    public String toStorageString() {
         return " | " + getStatusIcon() + " | " + description;
     }
 
     /**
-     * Returns the additional parts required for the
-     * string representation of a task when listed
-     * Subclasses may override this method to provide
-     * task-specific string additions
+     * Returns string for display to the user
+     * Subclasses may append extra information
      *
      * @return String representation used for listing
      */
