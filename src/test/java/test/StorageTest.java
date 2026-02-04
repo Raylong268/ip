@@ -46,7 +46,7 @@ public class StorageTest {
             // Correct tasks
             ArrayList<Task> correctTasks = new ArrayList<>();
             ToDo toDoMark = new ToDo("task");
-            toDoMark.markDone();
+            toDoMark.markComplete();
             Deadline deadlineUnmark = new Deadline("time", "something");
             Event eventUnmark = new Event("now", "some", "thing");
 
@@ -67,7 +67,7 @@ public class StorageTest {
     public void testResetList() {
         // 3 different types of test tasks
         ToDo toDoMark = new ToDo("task");
-        toDoMark.markDone();
+        toDoMark.markComplete();
         Deadline deadlineUnmark = new Deadline("time", "something");
         Event eventUnmark = new Event("now", "some", "thing");
 

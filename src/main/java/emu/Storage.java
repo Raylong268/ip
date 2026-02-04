@@ -8,95 +8,116 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Stores and loads the tasks from the hard drive
- * to allow tasks to persist between sessions
+ * Handles persistence of tasks by saving them to
+ * and loading them from a file on hard disk
  */
 public class Storage {
-    private File file;
-    private String link;
+    private static final String DIVIDER = " \\| ";
+    private static final String TODO_TYPE = "T";
+    private static final String DEADLINE_TYPE = "D";
+    private static final String EVENT_TYPE = "E";
+    private static final String COMPLETED_MARKER = "X";
+
+    private final File storageFile;
 
     /**
-     * Initialises a Storage using the given file path.
-     * If the file or its parent directory does not exist,
-     * they will be created.
+     * Creates a Storage object that uses the given {@code filePath}
+     * to persist task data. If the file or its parent directories
+     * do not exist, they will be created
      *
-     * @param link File path used for storage.
+     * @param filePath Path to the storage file
+     * @throws EmuException If the storage file cannot be created
      */
-    public Storage(String link) {
-        assert link != null : "link should not be null";
-        assert !link.isEmpty() : "link should not be empty";
+    public Storage(String filePath) throws EmuException {
+        assert filePath != null : "filePath should not be null";
+        assert !filePath.isEmpty() : "filePath should not be empty";
 
-        this.file = new File(link); // File used for storage.
-        this.link = link;
+        this.storageFile = new File(filePath);
+
         try {
-            file.getParentFile().mkdir();
-            file.createNewFile();
+            File parentDirectory = storageFile.getParentFile();
+            if (parentDirectory != null) {
+                parentDirectory.mkdir();
+            }
+            storageFile.createNewFile();
         } catch (IOException e) {
-            System.out.println(e);
+            throw new EmuException("I couldn't access the storage file!");
         }
     }
 
     /**
-     * Recreates the TaskList from the text-file given in constructor
+     * Loads tasks from the storage file and reconstructs
+     * them into a TaskList
      *
-     * @return The TaskList representation of the text in the text-file
-     * @throws EmuException If the scanner is unable to read the file
+     * @return A TaskList containing all stored tasks
+     * @throws EmuException If the storage file cannot be read
      */
     public TaskList initialiseList() throws EmuException {
-        try {
-            ArrayList<Task> tasks = new ArrayList<>();
-            // create a Scanner using the File as the source
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNext()) {
-                String text = scanner.nextLine();
-                assert text != null : "text should not be null";
-                assert !text.isEmpty() : "text should not be empty";
+        ArrayList<Task> tasks = new ArrayList<>();
 
-                Task task;
-                String[] parts = text.split(" \\| ");
-
-                if (parts[0].equals("T")) {
-                    task = new ToDo(parts[2]);
-                } else if (parts[0].equals("D")) {
-                    task = new Deadline(parts[2], parts[3]);
-                } else if (parts[0].equals("E")) {
-                    task = new Event(parts[2], parts[3], parts[4]);
-                } else {
-                    continue;
+        try (Scanner scanner = new Scanner(storageFile)) {
+            while (scanner.hasNextLine()) {
+                Task task = parseTask(scanner.nextLine());
+                if (task != null) {
+                    tasks.add(task);
                 }
-
-                if (parts[1].equals("X")) {
-                    task.markDone();
-                }
-
-                tasks.add(task);
             }
-            return new TaskList(tasks);
         } catch (FileNotFoundException e) {
             throw new EmuException("UWA!!! I can't seem to find your past tasks!");
         }
+
+        return new TaskList(tasks);
     }
 
     /**
-     * Records the current TaskList back into the text-file
-     * given in constructor, to store the tasks for future sessions
+     * Writes the current state of the given {@code tasks}
+     * to the storage file, overwriting any existing data
      *
-     * @param tasks The up-to-date list of tasks
-     * @throws EmuException If the FileWriter is unable to record the tasks into the file
+     * @param tasks The up-to-date task list to be stored
+     * @throws EmuException If the tasks cannot be written to the file
      */
     public void resetList(TaskList tasks) throws EmuException {
         assert tasks != null : "tasks cannot be null";
 
-        try {
-            FileWriter fileWriter = new FileWriter(link);
+        try (FileWriter writer = new FileWriter(storageFile)) {
             for (int i = 0; i < tasks.size(); i++) {
-                Task task = tasks.get(i);
+                Task task = tasks.getTask(i);
                 assert task != null : "task should not be null";
-                fileWriter.write(task.record() + "\n");
+                writer.write(task.toStorageString() + "\n");
             }
-            fileWriter.close();
         } catch (IOException e) {
             throw new EmuException("I couldn't record the tasks!");
         }
+    }
+
+    /**
+     * Parses a single line from the storage file and converts it
+     * into the corresponding Task object
+     *
+     * @param line A single line from the storage file
+     * @return The reconstructed Task, or null if the line is invalid
+     */
+    private Task parseTask(String line) {
+        assert line != null : "line should not be null";
+        assert !line.isEmpty() : "line should not be empty";
+
+        String[] parts = line.split(DIVIDER);
+        Task task;
+
+        if (TODO_TYPE.equals(parts[0])) {
+            task = new ToDo(parts[2]);
+        } else if (DEADLINE_TYPE.equals(parts[0])) {
+            task = new Deadline(parts[2], parts[3]);
+        } else if (EVENT_TYPE.equals(parts[0])) {
+            task = new Event(parts[2], parts[3], parts[4]);
+        } else {
+            return null;
+        }
+
+        if (COMPLETED_MARKER.equals(parts[1])) {
+            task.markComplete();
+        }
+
+        return task;
     }
 }

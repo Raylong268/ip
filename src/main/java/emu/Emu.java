@@ -3,105 +3,110 @@ package emu;
 import java.util.ArrayList;
 
 /**
- * Coordinates the UI, TaskList, Parser and Storage components
- * to handle user commands and program flow.
+ * Coordinates the UI, TaskList, Parser, and Storage components
+ * to handle user commands and program flow
  */
 public class Emu {
     private Storage storage;
     private TaskList tasks;
     private UI ui;
-    private boolean isExit; // Represents if the chatbot needs to close
+    private boolean isExit; // Indicates whether the chatbot should exit
+    private boolean hasStorageFailed; // Tracks if storage failed to initialise
 
     /**
-     * Initialises the storage, UI and TaskList
+     * Initialises the storage, UI, and TaskList
+     * If storage cannot be created, sets hasStorageFailed to true and continues
      */
     public Emu() {
-        this.storage = new Storage("./data/tasks.txt");
         this.ui = new UI();
         this.tasks = new TaskList(new ArrayList<Task>());
         this.isExit = false;
+
+        try {
+            this.storage = new Storage("./data/tasks.txt");
+        } catch (EmuException e) {
+            this.storage = null;
+            this.hasStorageFailed = true;
+        }
     }
 
     /**
-     * Initialises the TaskList for Emu and returns any error messages
+     * Initialises the TaskList by loading from storage
+     * If loading storage fails, hasStorageFailed set to true
      *
-     * @return A string representing the standard greeting,
-     *     otherwise a string representing if the initialisation failed
+     * @return Greeting string, with warning if storage failed
      */
     public String initialiseTaskList() {
         try {
             this.tasks = storage.initialiseList();
-            return ui.format(ui.greeting());
         } catch (EmuException e) {
-            return ui.format(ui.greeting() + e.getMessage());
+            this.hasStorageFailed = true;
         }
+        return ui.formatResponse(ui.giveGreeting(this.hasStorageFailed));
     }
 
+    /**
+     * Returns whether the chatbot is set to exit
+     */
     public boolean getExitStatus() {
         return this.isExit;
     }
 
     /**
-     * Controls the logic of the chatbot, executing the correct
-     * command based on the String input given and returning
-     * the formatted String response for the user
+     * Calls for the command to be executed based on user input
+     * and returns a formatted response
      *
-     * @param input The input given by the user
-     * @return A string representing the response given after doing the command
+     * @param input User input string
+     * @return Formatted response string
      */
     public String respond(String input) {
         assert input != null : "input should not be null";
 
         // Parses the input into command and other portions
         Parser parts = new Parser(input);
-        String command = parts.getCommand();
-        String other = parts.getOther();
 
         try {
-            String response;
-            if (command.equals("bye")) {
-                // Stores the TaskList back into Storage
-                storage.resetList(tasks);
-                this.isExit = true;
-                response = " Bye. Hope to see you again soon!\n";
-            } else if (command.equals("list")) {
-                // Lists all tasks
-                response = tasks.list();
-            } else if (command.equals("find")) {
-                // Lists all tasks that have other as a substring in the description
-                response = tasks.find(other);
-            } else if (command.equals("mark")) {
-                // Marks a task if valid, or throws EmuException if invalid task / input
-                int number = Parser.handleNumber(other);
-                response = tasks.mark(number);
-            } else if (command.equals("unmark")) {
-                // Unmarks a task if valid, or throws EmuException if invalid task / input
-                int number = Parser.handleNumber(other);
-                response = tasks.unmark(number);
-            } else if (command.equals("todo")) {
-                // Makes a Todo task, or throws EmuException if invalid input
-                Parser.handleTodo(other);
-                response = tasks.todo(other);
-            } else if (command.equals("deadline")) {
-                // Makes a Deadline task, or throws EmuException if invalid input
-                String[] items = Parser.handleDeadline(other);
-                response = tasks.deadline(items[0], items[1]);
-            } else if (command.equals("event")) {
-                // Makes an Event task, or throws EmuException if invalid input
-                String[] items = Parser.handleEvent(other);
-                response = tasks.event(items[0], items[1], items[2]);
-            } else if (command.equals("delete")) {
-                // Deletes a task, or throws EmuException if invalid task / input
-                int number = Parser.handleNumber(other);
-                response = tasks.delete(number);
-            } else {
-                // Throws EmuException for invalid command
-                throw new EmuException("I don't get what that means!");
-            }
-
-            return ui.format(response);
+            return ui.formatResponse(executeCommand(parts.getCommand(), parts.getOther()));
         } catch (EmuException e) {
-            return ui.format(e.getMessage());
+            return ui.formatResponse(e.getMessage());
         }
+    }
+
+    /**
+     * Handles the execution of a command based on its type and argument
+     *
+     * @param command The command string
+     * @param other The argument string for the command
+     * @return The result string from executing the command
+     * @throws EmuException If the command is invalid or fails
+     */
+    private String executeCommand(String command, String other) throws EmuException {
+        return switch (command) {
+        case "bye" -> {
+            if (storage != null) {
+                storage.resetList(tasks);
+            }
+            isExit = true;
+            yield "Bye. Hope to see you again soon!\n";
+        }
+        case "list" -> tasks.listTasks();
+        case "find" -> tasks.findTasks(other);
+        case "mark" -> tasks.markTask(Parser.parseNumber(other));
+        case "unmark" -> tasks.unmarkTask(Parser.parseNumber(other));
+        case "todo" -> {
+            Parser.verifyTodo(other);
+            yield tasks.addToDoTask(other);
+        }
+        case "deadline" -> {
+            String[] details = Parser.parseDeadline(other);
+            yield tasks.addDeadlineTask(details[0], details[1]);
+        }
+        case "event" -> {
+            String[] details = Parser.parseEvent(other);
+            yield tasks.addEventTask(details[0], details[1], details[2]);
+        }
+        case "delete" -> tasks.deleteTask(Parser.parseNumber(other));
+        default -> throw new EmuException("I don't get what that means!");
+        };
     }
 }

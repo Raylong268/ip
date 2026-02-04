@@ -4,15 +4,15 @@ import java.util.ArrayList;
 
 /**
  * Contains a list of tasks and provides methods
- * to manage and access them.
+ * to manage and access them
  */
 public class TaskList {
-    private ArrayList<Task> tasks;
+    private static final int TASKLIST_STARTING_POINT = 0;
+
+    private final ArrayList<Task> tasks;
 
     /**
-     * Initialises a TaskList with the given ArrayList of Tasks
-     *
-     * @param tasks ArrayList of Tasks to be stored in the ArrayList of Tasks
+     * Initialises a TaskList with the given list of tasks
      */
     public TaskList(ArrayList<Task> tasks) {
         assert tasks != null : "tasks should not be null";
@@ -20,133 +20,119 @@ public class TaskList {
     }
 
     /**
-     * Returns the task at the given position in the ArrayList
+     * Returns the task at the given position in the list
      *
-     * @param number The position of the Task in the ArrayList of Tasks
-     * @return The requested task at that position
+     * @param position The position of the task in the list
+     * @return The requested task
      */
-    public Task get(int number) {
-        assert number >= 0 : "number must not be negative";
-        assert number < tasks.size() : "number out of bounds of TaskList";
-
-        return tasks.get(number);
+    public Task getTask(int position) throws EmuException {
+        if (position <= tasks.size() && position > TASKLIST_STARTING_POINT) {
+            Task task = tasks.get(position - 1);
+            assert task != null : "task should not be null";
+            return task;
+        } else {
+            throw new EmuException("That's not a valid task!");
+        }
     }
 
     /**
-     * Returns the number of tasks stored in the ArrayList
-     *
-     * @return The number of tasks stored in the ArrayList
+     * Returns the number of tasks in the list
      */
     public int size() {
         return tasks.size();
     }
 
     /**
-     * Returns the string representation of all tasks in the ArrayList when listed
-     *
-     * @return A string representing the list of tasks
+     * Returns a string representation of all tasks in the list
      */
-    public String list() {
+    public String listTasks() {
         String temp = "Here are the tasks in your list:\n";
+
         for (int i = 1; i <= tasks.size(); i++) {
             Task task = tasks.get(i - 1);
-
             assert task != null : "task should not be null";
             temp += i + "." + task.toString() + "\n";
         }
+
         return temp;
     }
 
     /**
-     * Searches for all tasks in ArrayList that have the substring search
-     * in their description and returns a String that lists them
+     * Searches for tasks containing the given substring
+     * and returns a string listing them
      *
-     * @param search Substring to look for in the task description
-     * @return String representation of all the found tasks with the substring
+     * @param search Substring to search in task descriptions
+     * @return A string of matching tasks
      */
-    public String find(String search) {
+    public String findTasks(String search) {
         assert search != null : "search must not be null";
 
         int counter = 0;
         String temp = "Here are the matching tasks in your list:\n";
-        for (int i = 1; i <= size(); i++) {
-            Task task = tasks.get(i - 1);
-            assert task != null : "task should not be null";
-
+        for (Task task : tasks) {
             if (task.getDescription().contains(search)) {
-                temp += counter + "." + task.toString() + "\n";
                 counter++;
+                temp += counter + ". " + task.toString() + "\n";
             }
         }
         return temp;
     }
 
     /**
-     * Marks the task at the position of given int number
-     * as completed, and responds with a String of the newly marked task
+     * Marks the task at the given position as complete
+     * and returns a string showing the marked task
      *
-     * @param number The position of the Task in the ArrayList
-     * @return A string representing the response given after marking the task
+     * @param position The position of the task
+     * @return Response string after marking the task
      */
-    public String mark(int number) throws EmuException {
-        if (number <= tasks.size() && number >= 1) {
-            Task task = tasks.get(number - 1);
-            assert task != null : "task should not be null";
-
-            task.markDone();
-            return "  Nice! I've marked this task as done:\n"
-                    + "    " + task.toString() + "\n";
-        } else {
-            throw new EmuException("That's not a valid task silly!");
-        }
+    public String markTask(int position) throws EmuException {
+        Task task = getTask(position);
+        task.markComplete();
+        return "  Nice! I've marked this task as done:\n"
+                + "    " + task.toString() + "\n";
     }
 
     /**
-     * Unmarks the task at the position of given int number,
-     * and responds with a String of the newly unmarked task
+     * Marks the task at the given position as incomplete
+     * and returns a string showing the unmarked task
      *
-     * @param number The position of the Task in the ArrayList
-     * @return A string representing the response given after unmarking the task
+     * @param position The position of the task
+     * @return Response string after unmarking the task
      */
-    public String unmark(int number) throws EmuException {
-        if (number <= tasks.size() && number >= 1) {
-            Task task = tasks.get(number - 1);
-            assert task != null : "task should not be null";
-
-            task.markUndone();
-            return "  OK, I've marked this task as not done yet:\n"
-                    + "    " + task.toString() + "\n";
-        } else {
-            throw new EmuException("That's not a valid task silly!");
-        }
+    public String unmarkTask(int position) throws EmuException {
+        Task task = getTask(position);
+        task.markIncomplete();
+        return "  OK, I've marked this task as not done yet:\n"
+                + "    " + task.toString() + "\n";
     }
 
     /**
-     * Adds a ToDo task to the ArrayList with the given description
-     * desc, and returns a String displaying the added task
+     * Adds a ToDo task with the given description
+     * and returns a string showing the added task
      *
-     * @param desc The description of the added ToDo Task
-     * @return A string representing the response given after adding the ToDo task
+     * @param desc Description of the ToDo task
+     * @return Response string after adding the task
      */
-    public String todo(String desc) {
+    public String addToDoTask(String desc) {
         assert desc != null : "desc cannot be null";
         assert !desc.isEmpty() : "desc cannot be empty";
 
         ToDo task = new ToDo(desc);
         tasks.add(task);
-        return "  Got it. I've added this task:\n" + "    " + task.toString() + "\n"
-                + "  Now you have " + tasks.size() + " tasks in your list\n";
+        return "  Got it. I've added this task:\n"
+                + "    " + task.toString() + "\n"
+                + "  Now you have " + tasks.size() + " tasks.\n";
     }
 
     /**
-     * Adds a Deadline task to the ArrayList with the given description
-     * desc and by Date/String, and returns a String displaying the added task
+     * Adds a Deadline task with the given description and by date
+     * and returns a string showing the added task
      *
-     * @param desc The description of the added Deadline Task
-     * @param by The by Date/String of the added Deadline Task
-     * @return A string representing the response given after adding the Deadline task
+     * @param desc Description of the Deadline task
+     * @param by By date/string of the Deadline task
+     * @return Response string after adding the task
      */
-    public String deadline(String desc, String by) {
+    public String addDeadlineTask(String desc, String by) {
         assert desc != null : "desc cannot be null";
         assert !desc.isEmpty() : "desc cannot be empty";
 
@@ -155,21 +141,21 @@ public class TaskList {
 
         Deadline task = new Deadline(desc, by);
         tasks.add(task);
-        return "  Got it. I've added this task:\n" + "    " + task.toString() + "\n"
-                + "  Now you have " + tasks.size() + " tasks in your list\n";
+        return "  Got it. I've added this task:\n"
+                + "    " + task.toString() + "\n"
+                + "  Now you have " + tasks.size() + " tasks.\n";
     }
 
     /**
-     * Adds an Event task to the ArrayList with the given description
-     * desc, from Date/String, and to Date/String,
-     * and returns a String displaying the added task
+     * Adds an Event task with the given description, from date, and to date
+     * and returns a string showing the added task
      *
-     * @param desc The description of the added Event Task
-     * @param from The from Date/String of the added Event Task
-     * @param to The to Date/String of the added Event Task
-     * @return A string representing the response given after adding the Event task
+     * @param desc Description of the Event task
+     * @param from From date/string of the Event task
+     * @param to To date/string of the Event task
+     * @return Response string after adding the task
      */
-    public String event(String desc, String from, String to) {
+    public String addEventTask(String desc, String from, String to) {
         assert desc != null : "desc cannot be null";
         assert !desc.isEmpty() : "desc cannot be empty";
 
@@ -183,25 +169,21 @@ public class TaskList {
         tasks.add(task);
         return "  Got it. I've added this task:\n"
                 + "    " + task.toString() + "\n"
-                + "  Now you have " + tasks.size() + " tasks in your list\n";
+                + "  Now you have " + tasks.size() + " tasks.\n";
     }
 
     /**
-     * Deletes the task at the position of given int number,
-     * and responds with a String of the deleted task
+     * Deletes the task at the given position
+     * and returns a string showing the deleted task
      *
-     * @param number The position of the Task in the ArrayList
-     * @return A string representing the response given after deleting the task
+     * @param position The position of the task
+     * @return Response string after deleting the task
      */
-    public String delete(int number) throws EmuException {
-        if (number <= tasks.size() && number >= 1) {
-            Task task = tasks.remove(number - 1);
-            assert task != null : "task should not be null";
-
-            return "  Got it. I've removed this task:\n" + "    " + task.toString() + "\n"
-                    + "  Now you have " + tasks.size() + " tasks in your list\n";
-        } else {
-            throw new EmuException("That's not a valid task silly!");
-        }
+    public String deleteTask(int position) throws EmuException {
+        Task task = getTask(position);
+        tasks.remove(position - 1);
+        return "  Got it. I've removed this task:\n"
+                + "    " + task.toString() + "\n"
+                + "  Now you have " + tasks.size() + " tasks.\n";
     }
 }
