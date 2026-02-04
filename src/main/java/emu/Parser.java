@@ -15,10 +15,13 @@ public class Parser {
      * @param fullResponse Full input string from the user
      */
     public Parser(String fullResponse) {
+        assert fullResponse != null : "fullResponse should not be null";
+
         int firstSpace = fullResponse.indexOf(' ');
         this.command = (firstSpace == -1)
                 ? fullResponse
                 : fullResponse.substring(0, firstSpace);
+
         this.other = (firstSpace == -1)
                 ? ""
                 : fullResponse.substring(firstSpace + 1);
@@ -40,6 +43,8 @@ public class Parser {
      * @throws EmuException If the response is empty
      */
     public static void verifyTodo(String response) throws EmuException {
+        assert response != null : "response should not be null";
+
         if (response.isEmpty()) {
             throw new EmuException("You can't make a todo without a description!");
         }
@@ -53,6 +58,8 @@ public class Parser {
      * @throws EmuException If response is missing /by or description/date is empty
      */
     public static String[] parseDeadline(String response) throws EmuException {
+        assert response != null : "response should not be null";
+
         int slash = response.indexOf("/by");
         if (slash == -1) {
             throw new EmuException("You forgot to include /by in your deadline task!");
@@ -76,6 +83,8 @@ public class Parser {
      * @throws EmuException If format is incorrect or any field is empty
      */
     public static String[] parseEvent(String response) throws EmuException {
+        assert response != null : "response should not be null";
+
         int slashFrom = response.indexOf("/from");
         int slashTo = response.indexOf("/to");
 
@@ -102,6 +111,8 @@ public class Parser {
      * @throws EmuException If string is not a valid integer
      */
     public static int parseNumber(String stringNumber) throws EmuException {
+        assert stringNumber != null : "stringNumber should not be null";
+
         try {
             return Integer.parseInt(stringNumber);
         } catch (NumberFormatException e) {

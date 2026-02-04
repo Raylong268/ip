@@ -15,6 +15,8 @@ public class Event extends Task {
 
     private String from;
     private String to;
+    private LocalDate fromDate;
+    private LocalDate toDate;
 
     /**
      * Initialises an event task
@@ -27,23 +29,24 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to) {
         super(description);
-        this.from = parseDateString(from);
-        this.to = parseDateString(to);
-    }
 
-    /**
-     * Parses a date string into a formatted date string
-     * If parsing fails, returns the original string
-     *
-     * @param dateStr Input date string
-     * @return Formatted date string if valid, otherwise original string
-     */
-    private String parseDateString(String dateStr) {
+        assert from != null : "from String should not be null";
+        assert !from.isEmpty() : "from String should not be empty";
+        assert to != null : "to String should not be null";
+        assert !to.isEmpty() : "to String should not be empty";
+
         try {
-            LocalDate date = LocalDate.parse(dateStr);
-            return date.format(DATE_FORMATTER);
+            this.fromDate = LocalDate.parse(from);
+            this.from = fromDate.format(DATE_FORMATTER);
         } catch (DateTimeParseException e) {
-            return dateStr;
+            this.from = from;
+        }
+
+        try {
+            this.toDate = LocalDate.parse(to);
+            this.to = toDate.format(DATE_FORMATTER);
+        } catch (DateTimeParseException e) {
+            this.to = to;
         }
     }
 

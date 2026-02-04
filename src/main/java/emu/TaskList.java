@@ -7,13 +7,15 @@ import java.util.ArrayList;
  * to manage and access them
  */
 public class TaskList {
-    private ArrayList<Task> tasks;
     private static final int TASKLIST_STARTING_POINT = 0;
+
+    private final ArrayList<Task> tasks;
 
     /**
      * Initialises a TaskList with the given list of tasks
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "tasks should not be null";
         this.tasks = tasks;
     }
 
@@ -25,7 +27,9 @@ public class TaskList {
      */
     public Task getTask(int position) throws EmuException {
         if (position <= tasks.size() && position > TASKLIST_STARTING_POINT) {
-            return tasks.get(position - 1);
+            Task task = tasks.get(position - 1);
+            assert task != null : "task should not be null";
+            return task;
         } else {
             throw new EmuException("That's not a valid task!");
         }
@@ -43,10 +47,13 @@ public class TaskList {
      */
     public String listTasks() {
         String temp = "Here are the tasks in your list:\n";
+
         for (int i = 1; i <= tasks.size(); i++) {
             Task task = tasks.get(i - 1);
-            temp += i + ". " + task.toString() + "\n";
+            assert task != null : "task should not be null";
+            temp += i + "." + task.toString() + "\n";
         }
+
         return temp;
     }
 
@@ -58,6 +65,8 @@ public class TaskList {
      * @return A string of matching tasks
      */
     public String findTasks(String search) {
+        assert search != null : "search must not be null";
+
         int counter = 0;
         String temp = "Here are the matching tasks in your list:\n";
         for (Task task : tasks) {
@@ -105,6 +114,9 @@ public class TaskList {
      * @return Response string after adding the task
      */
     public String addToDoTask(String desc) {
+        assert desc != null : "desc cannot be null";
+        assert !desc.isEmpty() : "desc cannot be empty";
+
         ToDo task = new ToDo(desc);
         tasks.add(task);
         return "  Got it. I've added this task:\n"
@@ -121,6 +133,12 @@ public class TaskList {
      * @return Response string after adding the task
      */
     public String addDeadlineTask(String desc, String by) {
+        assert desc != null : "desc cannot be null";
+        assert !desc.isEmpty() : "desc cannot be empty";
+
+        assert by != null : "by cannot be null";
+        assert !by.isEmpty() : "by cannot be empty";
+
         Deadline task = new Deadline(desc, by);
         tasks.add(task);
         return "  Got it. I've added this task:\n"
@@ -138,6 +156,15 @@ public class TaskList {
      * @return Response string after adding the task
      */
     public String addEventTask(String desc, String from, String to) {
+        assert desc != null : "desc cannot be null";
+        assert !desc.isEmpty() : "desc cannot be empty";
+
+        assert from != null : "from cannot be null";
+        assert !from.isEmpty() : "from cannot be empty";
+
+        assert to != null : "to cannot be null";
+        assert !to.isEmpty() : "to cannot be empty";
+
         Event task = new Event(desc, from, to);
         tasks.add(task);
         return "  Got it. I've added this task:\n"

@@ -60,6 +60,9 @@ public class Emu {
      * @return Formatted response string
      */
     public String respond(String input) {
+        assert input != null : "input should not be null";
+
+        // Parses the input into command and other portions
         Parser parts = new Parser(input);
 
         try {

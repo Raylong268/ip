@@ -29,6 +29,9 @@ public class Storage {
      * @throws EmuException If the storage file cannot be created
      */
     public Storage(String filePath) throws EmuException {
+        assert filePath != null : "filePath should not be null";
+        assert !filePath.isEmpty() : "filePath should not be empty";
+
         this.storageFile = new File(filePath);
 
         try {
@@ -74,9 +77,13 @@ public class Storage {
      * @throws EmuException If the tasks cannot be written to the file
      */
     public void resetList(TaskList tasks) throws EmuException {
+        assert tasks != null : "tasks cannot be null";
+
         try (FileWriter writer = new FileWriter(storageFile)) {
             for (int i = 0; i < tasks.size(); i++) {
-                writer.write(tasks.getTask(i).toStorageString() + "\n");
+                Task task = tasks.getTask(i);
+                assert task != null : "task should not be null";
+                writer.write(task.toStorageString() + "\n");
             }
         } catch (IOException e) {
             throw new EmuException("I couldn't record the tasks!");
@@ -91,6 +98,9 @@ public class Storage {
      * @return The reconstructed Task, or null if the line is invalid
      */
     private Task parseTask(String line) {
+        assert line != null : "line should not be null";
+        assert !line.isEmpty() : "line should not be empty";
+
         String[] parts = line.split(DIVIDER);
         Task task;
 
