@@ -21,6 +21,9 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String by) {
         super(description); // calls parent Task constructor
+
+        assert by != null : "by String should not be null";
+
         try {
             // tries converting the string to LocalDate
             this.byDate = LocalDate.parse(by);

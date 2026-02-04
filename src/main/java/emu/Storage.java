@@ -23,6 +23,9 @@ public class Storage {
      * @param link File path used for storage.
      */
     public Storage(String link) {
+        assert link != null : "link should not be null";
+        assert !link.isEmpty() : "link should not be empty";
+
         this.file = new File(link); // File used for storage.
         this.link = link;
         try {
@@ -46,6 +49,9 @@ public class Storage {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNext()) {
                 String text = scanner.nextLine();
+                assert text != null : "text should not be null";
+                assert !text.isEmpty() : "text should not be empty";
+
                 Task task;
                 String[] parts = text.split(" \\| ");
 
@@ -79,10 +85,13 @@ public class Storage {
      * @throws EmuException If the FileWriter is unable to record the tasks into the file
      */
     public void resetList(TaskList tasks) throws EmuException {
+        assert tasks != null : "tasks cannot be null";
+
         try {
             FileWriter fileWriter = new FileWriter(link);
             for (int i = 0; i < tasks.size(); i++) {
                 Task task = tasks.get(i);
+                assert task != null : "task should not be null";
                 fileWriter.write(task.record() + "\n");
             }
             fileWriter.close();

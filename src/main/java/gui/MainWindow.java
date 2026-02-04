@@ -42,6 +42,8 @@ public class MainWindow extends AnchorPane {
         // initialises Emu and gets startup message
         this.emu = emu;
         String greeting = emu.initialiseTaskList();
+        assert greeting != null : "greeting should not be null";
+        assert !greeting.isEmpty() : "greeting should not be empty";
 
         dialogContainer.getChildren().addAll(
                 DialogBox.getEmuDialog(greeting, emuImage)
@@ -56,6 +58,12 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = emu.respond(input);
+
+        assert input != null : "input should not be null";
+
+        assert response != null : "response should not be null";
+        assert !response.isEmpty() : "response should not be empty";
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getEmuDialog(response, emuImage)

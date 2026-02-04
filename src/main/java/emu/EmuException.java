@@ -11,6 +11,9 @@ public class EmuException extends Exception {
      */
     public EmuException(String message) {
         super(message);
+
+        assert message != null : "Message should not be null";
+        assert !message.isEmpty() : "Message should not be empty";
     }
 
     /**

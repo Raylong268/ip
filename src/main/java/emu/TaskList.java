@@ -15,6 +15,7 @@ public class TaskList {
      * @param tasks ArrayList of Tasks to be stored in the ArrayList of Tasks
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "tasks should not be null";
         this.tasks = tasks;
     }
 
@@ -25,6 +26,9 @@ public class TaskList {
      * @return The requested task at that position
      */
     public Task get(int number) {
+        assert number >= 0 : "number must not be negative";
+        assert number < tasks.size() : "number out of bounds of TaskList";
+
         return tasks.get(number);
     }
 
@@ -46,6 +50,8 @@ public class TaskList {
         String temp = "Here are the tasks in your list:\n";
         for (int i = 1; i <= tasks.size(); i++) {
             Task task = tasks.get(i - 1);
+
+            assert task != null : "task should not be null";
             temp += i + "." + task.toString() + "\n";
         }
         return temp;
@@ -59,10 +65,14 @@ public class TaskList {
      * @return String representation of all the found tasks with the substring
      */
     public String find(String search) {
+        assert search != null : "search must not be null";
+
         int counter = 0;
         String temp = "Here are the matching tasks in your list:\n";
         for (int i = 1; i <= size(); i++) {
             Task task = tasks.get(i - 1);
+            assert task != null : "task should not be null";
+
             if (task.getDescription().contains(search)) {
                 temp += counter + "." + task.toString() + "\n";
                 counter++;
@@ -79,8 +89,10 @@ public class TaskList {
      * @return A string representing the response given after marking the task
      */
     public String mark(int number) throws EmuException {
-        if (number <= tasks.size()) {
+        if (number <= tasks.size() && number >= 1) {
             Task task = tasks.get(number - 1);
+            assert task != null : "task should not be null";
+
             task.markDone();
             return "  Nice! I've marked this task as done:\n"
                     + "    " + task.toString() + "\n";
@@ -97,8 +109,10 @@ public class TaskList {
      * @return A string representing the response given after unmarking the task
      */
     public String unmark(int number) throws EmuException {
-        if (number <= tasks.size()) {
+        if (number <= tasks.size() && number >= 1) {
             Task task = tasks.get(number - 1);
+            assert task != null : "task should not be null";
+
             task.markUndone();
             return "  OK, I've marked this task as not done yet:\n"
                     + "    " + task.toString() + "\n";
@@ -115,6 +129,9 @@ public class TaskList {
      * @return A string representing the response given after adding the ToDo task
      */
     public String todo(String desc) {
+        assert desc != null : "desc cannot be null";
+        assert !desc.isEmpty() : "desc cannot be empty";
+
         ToDo task = new ToDo(desc);
         tasks.add(task);
         return "  Got it. I've added this task:\n" + "    " + task.toString() + "\n"
@@ -130,6 +147,12 @@ public class TaskList {
      * @return A string representing the response given after adding the Deadline task
      */
     public String deadline(String desc, String by) {
+        assert desc != null : "desc cannot be null";
+        assert !desc.isEmpty() : "desc cannot be empty";
+
+        assert by != null : "by cannot be null";
+        assert !by.isEmpty() : "by cannot be empty";
+
         Deadline task = new Deadline(desc, by);
         tasks.add(task);
         return "  Got it. I've added this task:\n" + "    " + task.toString() + "\n"
@@ -147,6 +170,15 @@ public class TaskList {
      * @return A string representing the response given after adding the Event task
      */
     public String event(String desc, String from, String to) {
+        assert desc != null : "desc cannot be null";
+        assert !desc.isEmpty() : "desc cannot be empty";
+
+        assert from != null : "from cannot be null";
+        assert !from.isEmpty() : "from cannot be empty";
+
+        assert to != null : "to cannot be null";
+        assert !to.isEmpty() : "to cannot be empty";
+
         Event task = new Event(desc, from, to);
         tasks.add(task);
         return "  Got it. I've added this task:\n"
@@ -162,8 +194,10 @@ public class TaskList {
      * @return A string representing the response given after deleting the task
      */
     public String delete(int number) throws EmuException {
-        if (number <= tasks.size()) {
+        if (number <= tasks.size() && number >= 1) {
             Task task = tasks.remove(number - 1);
+            assert task != null : "task should not be null";
+
             return "  Got it. I've removed this task:\n" + "    " + task.toString() + "\n"
                     + "  Now you have " + tasks.size() + " tasks in your list\n";
         } else {

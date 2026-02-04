@@ -50,6 +50,8 @@ public class Emu {
      * @return A string representing the response given after doing the command
      */
     public String respond(String input) {
+        assert input != null : "input should not be null";
+
         // Parses the input into command and other portions
         Parser parts = new Parser(input);
         String command = parts.getCommand();

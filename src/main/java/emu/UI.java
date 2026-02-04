@@ -25,6 +25,9 @@ public class UI {
      * @return Formatted text
      */
     public String format(String response) {
+        assert response != null : "response should not be null";
+        assert !response.isEmpty() : "response should not be empty";
+
         return line + response + line;
     }
 }
