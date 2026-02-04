@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  * Handles persistence of tasks by saving them to
- * and loading them from a file on hard disk.
+ * and loading them from a file on hard disk
  */
 public class Storage {
     private static final String DIVIDER = " \\| ";

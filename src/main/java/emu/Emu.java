@@ -15,7 +15,7 @@ public class Emu {
 
     /**
      * Initialises the storage, UI, and TaskList
-     * If storage cannot be created, sets a flag and continues
+     * If storage cannot be created, sets hasStorageFailed to true and continues
      */
     public Emu() {
         this.ui = new UI();
@@ -73,7 +73,7 @@ public class Emu {
      * Handles the execution of a command based on its type and argument
      *
      * @param command The command string
-     * @param other   The argument string for the command
+     * @param other The argument string for the command
      * @return The result string from executing the command
      * @throws EmuException If the command is invalid or fails
      */

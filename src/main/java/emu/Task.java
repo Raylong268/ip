@@ -9,9 +9,9 @@ public abstract class Task {
     private boolean isComplete;
 
     /**
-     * Initialises the common variables shared by all tasks.
+     * Initialises the common variables shared by all tasks
      *
-     * @param description Description of the task.
+     * @param description Description of the task
      */
     public Task(String description) {
         this.description = description;
