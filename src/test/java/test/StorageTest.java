@@ -85,7 +85,7 @@ public class StorageTest {
 
             // Try resetlist and get file
             Storage storage = new Storage(tempFile.getAbsolutePath());
-            storage.resetList(sample);
+            storage.resetFile(sample);
 
             // Get text out of file
             String text = "";

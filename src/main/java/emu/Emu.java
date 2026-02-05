@@ -84,7 +84,7 @@ public class Emu {
         return switch (command) {
         case "bye" -> {
             if (storage != null) {
-                storage.resetList(tasks);
+                storage.resetFile(tasks);
             }
             isExit = true;
             yield "Bye. Hope to see you again soon!\n";
@@ -106,6 +106,7 @@ public class Emu {
             yield tasks.addEventTask(details[0], details[1], details[2]);
         }
         case "delete" -> tasks.deleteTask(Parser.parseNumber(other));
+        case "undo" -> tasks.undoLastCommand();
         default -> throw new EmuException("I don't get what that means!");
         };
     }

@@ -76,7 +76,7 @@ public class Storage {
      * @param tasks The up-to-date task list to be stored
      * @throws EmuException If the tasks cannot be written to the file
      */
-    public void resetList(TaskList tasks) throws EmuException {
+    public void resetFile(TaskList tasks) throws EmuException {
         assert tasks != null : "tasks cannot be null";
 
         try (FileWriter writer = new FileWriter(storageFile)) {
@@ -97,7 +97,7 @@ public class Storage {
      * @param line A single line from the storage file
      * @return The reconstructed Task, or null if the line is invalid
      */
-    private Task parseTask(String line) {
+    public static Task parseTask(String line) {
         assert line != null : "line should not be null";
         assert !line.isEmpty() : "line should not be empty";
 

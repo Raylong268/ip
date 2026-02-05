@@ -10,6 +10,7 @@ public class TaskList {
     private static final int TASKLIST_STARTING_POINT = 0;
 
     private final ArrayList<Task> tasks;
+    private final ArrayList<String> history;
 
     /**
      * Initialises a TaskList with the given list of tasks
@@ -17,6 +18,7 @@ public class TaskList {
     public TaskList(ArrayList<Task> tasks) {
         assert tasks != null : "tasks should not be null";
         this.tasks = tasks;
+        this.history = new ArrayList<String>();
     }
 
     /**
@@ -26,8 +28,8 @@ public class TaskList {
      * @return The requested task
      */
     public Task getTask(int position) throws EmuException {
-        if (position <= tasks.size() && position > TASKLIST_STARTING_POINT) {
-            Task task = tasks.get(position - 1);
+        if (position <= tasks.size() && position >= TASKLIST_STARTING_POINT) {
+            Task task = tasks.get(position);
             assert task != null : "task should not be null";
             return task;
         } else {
@@ -51,7 +53,7 @@ public class TaskList {
         for (int i = 1; i <= tasks.size(); i++) {
             Task task = tasks.get(i - 1);
             assert task != null : "task should not be null";
-            temp += i + "." + task.toString() + "\n";
+            temp += i + ". " + task.toString() + "\n";
         }
 
         return temp;
@@ -86,10 +88,15 @@ public class TaskList {
      * @return Response string after marking the task
      */
     public String markTask(int position) throws EmuException {
-        Task task = getTask(position);
-        task.markComplete();
-        return "  Nice! I've marked this task as done:\n"
-                + "    " + task.toString() + "\n";
+        Task task = getTask(position - 1);
+        if (task.getStatusIcon().equals(" ")) {
+            task.markComplete();
+            history.add("mark " + position);
+            return "  Nice! I've marked this task as done:\n"
+                    + "    " + task.toString() + "\n";
+        } else {
+            throw new EmuException("The task is already marked!");
+        }
     }
 
     /**
@@ -100,10 +107,15 @@ public class TaskList {
      * @return Response string after unmarking the task
      */
     public String unmarkTask(int position) throws EmuException {
-        Task task = getTask(position);
-        task.markIncomplete();
-        return "  OK, I've marked this task as not done yet:\n"
-                + "    " + task.toString() + "\n";
+        Task task = getTask(position - 1);
+        if (task.getStatusIcon().equals("X")) {
+            task.markIncomplete();
+            history.add("unmark " + position);
+            return "  OK, I've marked this task as not done yet:\n"
+                    + "    " + task.toString() + "\n";
+        } else {
+            throw new EmuException("The task is already unmarked!");
+        }
     }
 
     /**
@@ -119,6 +131,7 @@ public class TaskList {
 
         ToDo task = new ToDo(desc);
         tasks.add(task);
+        history.add("add");
         return "  Got it. I've added this task:\n"
                 + "    " + task.toString() + "\n"
                 + "  Now you have " + tasks.size() + " tasks.\n";
@@ -141,6 +154,7 @@ public class TaskList {
 
         Deadline task = new Deadline(desc, by);
         tasks.add(task);
+        history.add("add");
         return "  Got it. I've added this task:\n"
                 + "    " + task.toString() + "\n"
                 + "  Now you have " + tasks.size() + " tasks.\n";
@@ -167,6 +181,7 @@ public class TaskList {
 
         Event task = new Event(desc, from, to);
         tasks.add(task);
+        history.add("add");
         return "  Got it. I've added this task:\n"
                 + "    " + task.toString() + "\n"
                 + "  Now you have " + tasks.size() + " tasks.\n";
@@ -180,10 +195,60 @@ public class TaskList {
      * @return Response string after deleting the task
      */
     public String deleteTask(int position) throws EmuException {
-        Task task = getTask(position);
+        Task task = getTask(position - 1);
         tasks.remove(position - 1);
+        history.add("delete " + task.toStorageString());
         return "  Got it. I've removed this task:\n"
                 + "    " + task.toString() + "\n"
                 + "  Now you have " + tasks.size() + " tasks.\n";
+    }
+
+    /**
+     * Undoes the previous edit to the Tasklist
+     * and returns a string showing the undone task
+     *
+     * @return Response string representing the undone task
+     */
+    public String undoLastCommand() throws EmuException {
+        if (history.isEmpty()) {
+            throw new EmuException("There's nothing to undo!");
+        }
+
+        String lastCommand = history.get(history.size() - 1);
+        history.remove(history.size() - 1);
+
+        String[] parts = lastCommand.split(" ", 2);
+        String command = parts[0];
+        String other = parts.length > 1 ? parts[1] : "";
+
+        String response = "Ok! I've undone the task as specified below!\n";
+
+        if (command.equals("add")) {
+            Task task = tasks.get(tasks.size() - 1);
+            tasks.remove(tasks.size() - 1);
+            response += "Last added task has been removed: " + task.toString() + "\n";
+
+        } else if (command.equals("unmark")) {
+            int position = Parser.parseNumber(other);
+            Task task = tasks.get(position - 1);
+            task.markComplete();
+            response += "Task has been re-marked: " + task.toString() + "\n";
+
+        } else if (command.equals("mark")) {
+            int position = Parser.parseNumber(other);
+            Task task = tasks.get(position - 1);
+            task.markIncomplete();
+            response += "Task has been unmarked: " + task.toString() + "\n";
+
+        } else if (command.equals("delete")) {
+            Task task = Storage.parseTask(other);
+            tasks.add(task);
+            response += "Deleted task has been restored: " + task.toString() + "\n";
+
+        } else {
+            throw new EmuException("There's nothing to undo!");
+        }
+
+        return response;
     }
 }
